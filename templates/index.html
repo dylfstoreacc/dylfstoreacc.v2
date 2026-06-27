@@ -52,10 +52,11 @@
         @keyframes cosmicPulse { 0%, 100% { transform: scale(0.97); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 20px #00ffff); } }
         @keyframes ringRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .scroll-content { flex: 1; overflow-y: auto; padding-bottom: 95px; -webkit-overflow-scrolling: touch; position: relative; }
+        /* Jarak gulung konten disesuaikan agar pas di atas nav bar melayang */
+        .scroll-content { flex: 1; overflow-y: auto; padding-bottom: 110px; -webkit-overflow-scrolling: touch; position: relative; }
         .scroll-content::-webkit-scrollbar { width: 0px; }
 
-        /* FORMAT FRAME BANNER TOKO YANG STABIL */
+        /* BANNER STABIL UNTUK MENU NON-HOME */
         .store-banner { 
             width: 100%; 
             height: 130px; 
@@ -137,20 +138,20 @@
         .input-field { width: 100%; background: #080b16; border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 8px; padding: 10px; color: #ffffff; font-size: 12px; outline: none; margin-top: 4px; }
         .submit-review-btn { width: 100%; background: linear-gradient(90deg, #bc13fe, #0a2463); color: #ffffff; border: none; border-radius: 10px; padding: 12px; font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
 
-        /* FOOTER & MODAL ABOUT STORE */
+        /* FOOTER & POPUP POPUP MODAL WINDOW SYSTEM */
         .footer-privacy { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: center; align-items: center; gap: 15px; position: relative; z-index: 10; }
         .privacy-link { color: #718096; font-size: 12px; text-decoration: none; background: none; border: none; cursor: pointer; transition: text-shadow 0.15s ease, color 0.15s ease; }
         .privacy-link:hover, .privacy-link:active { color: #00ffff; text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
         
         .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(5, 5, 8, 0.95); z-index: 200; display: flex; justify-content: center; align-items: center; padding: 25px; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
         .modal-overlay.show { opacity: 1; pointer-events: auto; }
-        .modal-card { width: 100%; background-color: #080b16; border: 1px solid #bc13fe; border-radius: 20px; padding: 22px; }
-        .modal-header { color: #00ffff; font-size: 20px; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; text-shadow: 0 0 6px #00ffff; }
-        .modal-body-text { color: #e2e8f0; font-size: 13px; line-height: 1.6; margin-bottom: 15px; }
-        .modal-close-btn { background: #bc13fe; color: #ffffff; border: none; padding: 10px 20px; font-size: 12px; font-weight: 700; border-radius: 12px; cursor: pointer; width: 100%; }
+        .modal-card { width: 100%; max-width: 380px; background-color: #080b16; border: 2px solid #bc13fe; border-radius: 20px; padding: 22px; box-shadow: 0 0 20px rgba(188, 19, 254, 0.4); }
+        .modal-header { color: #00ffff; font-size: 18px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; text-shadow: 0 0 6px #00ffff; border-bottom: 1px dashed rgba(0, 255, 255, 0.2); padding-bottom: 8px; }
+        .modal-body-text { color: #e2e8f0; font-size: 12.5px; line-height: 1.6; margin-bottom: 15px; text-align: left; }
+        .modal-close-btn { background: linear-gradient(90deg, #bc13fe, #0a2463); color: #ffffff; border: none; padding: 11px 20px; font-size: 12px; font-weight: 700; border-radius: 12px; cursor: pointer; width: 100%; letter-spacing: 1px; }
 
         /* ==========================================================================
-           5. NAV BAR BAWAH FIXED STABIL POSITION (ANTI-AMBLAS)
+           5. FIX SETTING NAV BAR: OTOMATIS MELAYANG DIATAS TOMBOL KURSOR BERANDA HP
            ========================================================================== */
         .bottom-nav { 
             position: absolute; 
@@ -158,12 +159,25 @@
             left: 0; 
             width: 100%; 
             height: 75px; 
-            background: rgba(13, 13, 19, 0.65); 
+            background: rgba(13, 13, 19, 0.7); 
             border-top: 2px solid #bc13fe; 
             backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
             display: flex; justify-content: space-evenly; align-items: center; z-index: 100; 
             box-shadow: 0 -4px 25px rgba(188, 19, 254, 0.35);
+        }
+        
+        /* RESPONSIVE SMARTPHONE DETECTOR: Menaikkan tombol menu di atas kursor sistem HP */
+        @media (max-width: 480px) {
+            .bottom-nav {
+                bottom: 14px; /* Naik 14px memberikan jarak aman dari tombol Back/Home HP */
+                left: 4%;
+                width: 92%;
+                border: 2px solid #bc13fe;
+                border-radius: 18px;
+                box-shadow: 0 0 20px rgba(188, 19, 254, 0.5);
+                height: 70px;
+            }
         }
         @media (min-width: 480px) { .bottom-nav { border-radius: 0 0 22px 22px; } }
         
@@ -207,11 +221,23 @@
 
         <div id="about-modal" class="modal-overlay">
             <div class="modal-card">
-                <div class="modal-header">About Us</div>
+                <div class="modal-header"> About DYLF STOREacc</div>
                 <div class="modal-body-text">
-                    <strong>DYLF STOREacc</strong> adalah platform penyedia layanan Jual-Beli Akun Game serta Jasa Rekber digital terpercaya buatan <strong>Dileppp</strong>.
+                    Selamat datang di <strong>DYLF STOREacc</strong>, platform ekosistem siber premium penyedia layanan Jual-Beli Akun Game serta Layanan Jasa Rekber Digital terpercaya yang dibangun langsung oleh <strong>Dileppp</strong>.<br><br>
+                    Kami berkomitmen penuh untuk menghadirkan transaksi gaming yang 100% amanah, kilat, dan terlindungi. Dengan perlindungan sistem berlapis dan komunitas yang solid, kami siap membantu kamu mengamankan akun impian serta melayani kebutuhan transaksi digital harian tanpa rasa khawatir. Kepercayaan konsumen adalah misi utama kami!
                 </div>
-                <button class="modal-close-btn" onclick="toggleAboutModal(false)">TUTUP</button>
+                <button class="modal-close-btn" onclick="toggleModal('about-modal', false)">KONFIRMASI SIBER</button>
+            </div>
+        </div>
+
+        <div id="privacy-modal" class="modal-overlay">
+            <div class="modal-card">
+                <div class="modal-header"> Security & Privacy Policy</div>
+                <div class="modal-body-text">
+                    Di <strong>DYLF STOREacc</strong>, keamanan privasi data digital setiap pelanggan adalah prioritas paling mutlak.<br><br>
+                    Seluruh track history data transaksi, ulasan konsumen, serta koordinasi kontak personal di dalam grup maupun channel dilindungi sepenuhnya dari pihak ketiga. Sistem cloud database kami menjamin bahwa rekam data yang kamu kirimkan digunakan secara transparan murni untuk meningkatkan kenyamanan kualitas layanan bertransaksi bersama kami. Bersama kita bangun komunitas digital gaming yang bersih dan aman!
+                </div>
+                <button class="modal-close-btn" onclick="toggleModal('privacy-modal', false)">SINKRONISASI DATA</button>
             </div>
         </div>
 
@@ -258,7 +284,7 @@
 
                 <div id="page-testi" class="page-section">
                     <div class="store-banner">
-                        <img src="/static/bannerdf2.png" class="banner-img" alt="Banner Testi">
+                        <img src="/static/banner.png" class="banner-img" alt="Banner">
                     </div>
                     <div class="testi-section-wrapper">
                         <div style="text-align:center; margin-bottom:15px;">
@@ -275,7 +301,7 @@
 
                 <div id="page-ulasan" class="page-section">
                     <div class="store-banner">
-                        <img src="/static/bannerdf3.png" class="banner-img" alt="Banner Ulasan">
+                        <img src="/static/banner.png" class="banner-img" alt="Banner">
                     </div>
                     <div class="review-stats-summary">
                         <div class="big-rating-number">5.0 / 5.0</div>
@@ -310,9 +336,9 @@
                 </div>
 
                 <div class="footer-privacy">
-                    <button class="privacy-link" onclick="toggleAboutModal(true)">About Store</button>
+                    <button class="privacy-link" onclick="toggleModal('about-modal', true)">About Store</button>
                     <span style="color:rgba(255,255,255,0.15)">|</span>
-                    <button class="privacy-link">Privacy Policy</button>
+                    <button class="privacy-link" onclick="toggleModal('privacy-modal', true)">Privacy Policy</button>
                 </div>
 
             </div>
@@ -341,8 +367,9 @@
     <script>
         setTimeout(() => { document.getElementById('loading-screen').classList.add('hide'); }, 2200);
 
-        function toggleAboutModal(show) {
-            const modal = document.getElementById('about-modal');
+        // Fungsi pengendali modal dinamis (About Us & Privacy Policy)
+        function toggleModal(idModal, show) {
+            const modal = document.getElementById(idModal);
             if(show) modal.classList.add('show');
             else modal.classList.remove('show');
         }
@@ -404,7 +431,6 @@
             ambilFotoTesti(tabName); 
         }
 
-        // FIX SAKTI: container diganti kontainer agar loop review lancar jaya!
         async function ambilUlasanCloud() {
             const kontainer = document.getElementById('review-list');
             if (!kontainer) return;
