@@ -1,95 +1,121 @@
-from flask import Flask, render_template, request, jsonify
-from supabase import create_client, Client
 import os
+from flask import Flask, render_template, request, jsonify
+from datetime import datetime
+from supabase import create_client, Client
 
 app = Flask(__name__)
 
 # ==========================================================================
-# 1. KONFIGURASI GERBANG CLOUD DATABASE SUPABASE
+# CONFIG & KONEKSI DB CLOUD SUPABASE
 # ==========================================================================
-SUPABASE_URL = "https://pydgbguisbkjzgoixrir.supabase.co"
-SUPABASE_KEY = "eyJhY2ciOiI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInN1YiI6Im1vYjE1NzY5ImV4cCI6MTFubFub24lc2lyb252b4cmlyIiwiY210IiwicXQiOjE3MDg2YmJN5ZGdiZ3Vpc2Jranpnb2l4cmlyR2F2Fl2Kliejo"
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+# Pastikan kamu sudah mengisi Environment Variables ini di Render 
+# atau memasukkan string URL & KEY Supabase milikmu secara langsung di sini.
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://xyz.supabase.co")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "your-supabase-anon-key")
+
+# Inisialisasi Klien Supabase
+try:
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+except Exception as e:
+    print(f"Peringatan: Gagal terhubung ke Supabase. Log: {e}")
+    supabase = None
 
 
 # ==========================================================================
-# 2. RUTE UTAMA & API TESTIMONI BERDASARKAN WAKTU UPLOAD TERBARU (DESCENDING)
+# ROUTE UTAMA (MEMUAT HALAMAN WEB)
 # ==========================================================================
-
 @app.route('/')
 def home():
+    # Merender template index.html siber buatan kita
     return render_template('index.html')
 
 
-@app.route('/api/testi/<kategori>', methods=['GET'])
-def ambil_foto_testimoni(kategori):
-    """
-    Fungsi khusus menyisir file testimoni dan mengurutkannya secara mutlak
-    berdasarkan waktu modifikasi/upload file terakhir (paling baru di atas).
-    """
-    try:
-        folder_path = os.path.join('static', 'testi', kategori)
-        
-        if not os.path.exists(folder_path):
-            return jsonify([])
-            
-        # Saring file yang murni berformat gambar saja (.png, .jpg, .jpeg)
-        daftar_file = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
-        
-        # Pasangkan nama file dengan waktu modifikasi terakhirnya di komputer
-        file_dengan_waktu = []
-        for file_name in daftar_file:
-            full_path = os.path.join(folder_path, file_name)
-            waktu_modifikasi = os.path.getmtime(full_path)
-            file_dengan_waktu.append((file_name, waktu_modifikasi))
-            
-        # Urutkan secara Descending (Menurun) berdasarkan waktu modifikasi
-        file_dengan_waktu.sort(key=lambda x: x[1], reverse=True)
-        
-        # Ambil kembali nama filenya saja setelah berurutan rapi, lalu jadikan URL web
-        urls_gambar = [f'/static/testi/{kategori}/{x[0]}' for x in file_dengan_waktu]
-        return jsonify(urls_gambar)
-        
-    except Exception as e:
+# ==========================================================================
+# ENDPOINT API: AMBIL FOTO TESTIMONI SECARA DINAMIS
+# ==========================================================================
+@app.route('/api/testi/<kategori>')
+def ambil_testi(kategori):
+    # Memastikan hanya membaca kategori 'stok' atau 'rekber'
+    if kategori not in ['stok', 'rekber']:
         return jsonify([])
 
+    folder_target = os.path.join('static', 'testi', kategori)
+    urls_gambar = []
+
+    # Cek apakah folder tersebut eksis di server
+    if os.path.exists(folder_target):
+        for file in os.listdir(folder_target):
+            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif')):
+                # Buat format URL web yang valid untuk dibaca oleh JavaScript Frontend
+                urls_gambar.append(f'/static/testi/{kategori}/{file}')
+    
+    return jsonify(urls_gambar)
+
 
 # ==========================================================================
-# 3. JALUR AMBIL & KIRIM ULASAN REAL-TIME SUPABASE CLOUD
+# ENDPOINT API: AMBIL ULASAN YANG SUDAH DI-APPROVED DARI SUPABASE
 # ==========================================================================
-
 @app.route('/ulasan', methods=['GET'])
 def ambil_ulasan():
+    if not supabase:
+        return jsonify([])
+    
     try:
-        respon = supabase.table('ulasan').select('*').eq('status', 'approved').order('id', desc=True).execute()
+        # Mengambil ulasan yang berstatus 'approved' dan diurutkan dari yang paling baru
+        respon = supabase.table('ulasan')\
+            .select('*')\
+            .eq('status', 'approved')\
+            .order('id', desc=True)\
+            .execute()
+        
         return jsonify(respon.data)
     except Exception as e:
+        print(f"Error ambil data ulasan: {e}")
         return jsonify([])
 
 
+# ==========================================================================
+# ENDPOINT API: KONSUMEN TULIS ULASAN BARU (MASUK FILTER PENDING)
+# ==========================================================================
 @app.route('/tambah-ulasan', methods=['POST'])
 def tambah_ulasan():
+    if not supabase:
+        return jsonify({'success': False, 'message': 'Sistem database belum terkonfigurasi.'})
+    
     try:
-        nama = request.form.get('nama')
+        nama = request.form.get('nama', 'Anonim').strip()
         rating = int(request.form.get('rating', 5))
-        text = request.form.get('text')
-        
-        data_ulasan = {
-            "nama": nama,
-            "rating": rating,
-            "text": text,
-            "status": "pending"
+        text = request.form.get('text', '').strip()
+        tanggal_sekarang = datetime.now().strftime('%d %b %Y')
+
+        if not text:
+            return jsonify({'success': False, 'message': 'Isi ulasan tidak boleh kosong.'})
+
+        # Data ulasan baru yang akan dimasukkan ke tabel Supabase
+        data_baru = {
+            'nama': nama,
+            'rating': rating,
+            'text': text,
+            'tanggal': tanggal_sekarang,
+            'status': 'pending'  # Otomatis pending agar bisa kamu saring dulu lewat dashboard Supabase
         }
+
+        supabase.table('ulasan').insert(data_baru).execute()
         
-        supabase.table('ulasan').insert(data_ulasan).execute()
-        return jsonify({"success": True, "message": "Ulasan terkirim ke antrean saringan admin Dileppp! 🌱"})
-        
+        return jsonify({
+            'success': True, 
+            'message': 'Ulasan berhasil terkirim! Menunggu persetujuan saringan admin Dileppp agar muncul live.'
+        })
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)})
+        print(f"Error tambah ulasan baru: {e}")
+        return jsonify({'success': False, 'message': 'Terjadi kesalahan sistem saat mengirim ulasan.'})
 
 
 # ==========================================================================
-# 4. PEMICU JALUR SERVER FLASK
+# EKSEKUSI SERVER DINAMIS CLOUD (ANTI-ERROR PORT RENDER)
 # ==========================================================================
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Server Render akan otomatis mengisi variabel PORT lingkungan ini secara mandiri
+    port = int(os.environ.get("PORT", 5000))
+    # debug di-set False agar pengeksekusi gunicorn stabil & aman di server cloud
+    app.run(host='0.0.0.0', port=port, debug=False)
