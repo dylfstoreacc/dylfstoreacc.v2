@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ==========================================================================
-           1. LAYOUT UTAMA & OPTIMASI BACKGROUND (BERSIH DARI KODE GANDA)
+           1. LAYOUT CORE & BACKGROUND MURNI TRANSPARAN
            ========================================================================== */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
@@ -42,7 +42,7 @@
             }
         }
 
-        /* SCREEN CYBER LOADING TRANSISI KILAT MENU */
+        /* INTRUDER LOADER KILAT TRANSISI */
         .cyber-loader-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #040407; z-index: 999; display: flex; justify-content: center; align-items: center; opacity: 1; transition: opacity 0.25s ease-in-out; }
         .cyber-loader-screen.hide { opacity: 0; pointer-events: none; }
         .cosmic-loader-wrapper { position: relative; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; }
@@ -52,10 +52,11 @@
         @keyframes cosmicPulse { 0%, 100% { transform: scale(0.97); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 20px #00ffff); } }
         @keyframes ringRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .scroll-content { flex: 1; overflow-y: auto; padding-bottom: 95px; -webkit-overflow-scrolling: touch; position: relative; }
+        /* REVISI: Padding bawah dinaikkan agar konten tidak tertutup bar menu transparan */
+        .scroll-content { flex: 1; overflow-y: auto; padding-bottom: 110px; -webkit-overflow-scrolling: touch; position: relative; }
         .scroll-content::-webkit-scrollbar { width: 0px; }
 
-        /* BINDING BANNER OVAL PRESISI PAS */
+        /* BANNER PROPORSIONAL LEPAS RATA ATAS */
         .store-banner { 
             width: 100%; 
             height: auto; 
@@ -64,14 +65,12 @@
             background: transparent;
             margin-top: 16px; 
             padding: 0 8px; 
-            display: none; 
         }
         .banner-img { 
             width: 100%; 
             height: auto; 
             object-fit: contain; 
-            border-radius: 25px / 12px; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border-radius: 0 0 12px 12px; 
         }
         .main-content-wrapper { padding: 0 20px; position: relative; }
 
@@ -79,19 +78,19 @@
         .page-section.active { display: block; opacity: 1; transition: opacity 0.15s ease-in-out; }
 
         /* ==========================================================================
-           2. ANIMASI GARIS KELAP-KELIP HIDUP (NEON BLINK)
+           2. ANIMASI GARIS KELAP-KELIP SIBER
            ========================================================================== */
         @keyframes neonBlinkLine {
             0%, 100% { border-color: rgba(188, 19, 254, 0.8); box-shadow: 0 0 12px rgba(188, 19, 254, 0.4); }
             50% { border-color: rgba(0, 255, 255, 0.8); box-shadow: 0 0 12px rgba(0, 255, 255, 0.4); }
         }
 
-        .profile-container { text-align: center; margin-top: 35px; margin-bottom: 15px; }
-        .profile-logo { width: 165px; height: 165px; object-fit: contain; filter: drop-shadow(0 0 12px rgba(0, 255, 255, 0.4)); }
+        .profile-container { text-align: center; margin-top: 15px; margin-bottom: 15px; }
+        .profile-logo { width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4)); }
         .profile-title { font-size: 26px; font-weight: 900; letter-spacing: 1.5px; text-shadow: 0 0 8px #00ffff; color: #ffffff; margin: 10px 0; }
         
         .bio-box { 
-            background: rgba(5, 12, 35, 0.75); border: 2px solid #bc13fe; border-radius: 14px; 
+            background: rgba(5, 15, 45, 0.55); border: 2px solid #bc13fe; border-radius: 14px; 
             padding: 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;
             animation: neonBlinkLine 4s infinite ease-in-out;
         }
@@ -107,19 +106,19 @@
         .mascot-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4)); }
 
         .group-card { 
-            background: rgba(5, 12, 35, 0.75); border-left: 4px solid #bc13fe; border-radius: 0 14px 14px 0; 
+            background: rgba(5, 15, 45, 0.55); border-left: 4px solid #bc13fe; border-radius: 0 14px 14px 0; 
             padding: 14px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; 
             margin-left: 135px; border-top: 1px solid rgba(188,19,254,0.15); border-bottom: 1px solid rgba(188,19,254,0.15); border-right: 1px solid rgba(188,19,254,0.15); 
             transition: background-color 0.2s;
             animation: neonBlinkLine 5s infinite ease-in-out;
         }
-        .group-card:hover { background: rgba(10, 36, 99, 0.55); }
+        .group-card:hover { background: rgba(10, 36, 99, 0.45); }
 
         /* ==========================================================================
            3. SEKSYEN TESTIMONI
            ========================================================================== */
-        .testi-section-wrapper { padding: 20px 10px; margin-top: 20px; background-color: rgba(11, 11, 17, 0.75); border: 2px solid rgba(0, 255, 255, 0.2); border-radius: 20px; }
-        .testi-tabs { display: flex; background-color: rgba(5, 15, 45, 0.6); padding: 4px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(188, 19, 254, 0.15); gap: 4px; }
+        .testi-section-wrapper { padding: 20px 10px; margin-top: 20px; background-color: rgba(11, 11, 17, 0.55); border: 2px solid rgba(0, 255, 255, 0.2); border-radius: 20px; }
+        .testi-tabs { display: flex; background-color: rgba(5, 15, 45, 0.5); padding: 4px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(188, 19, 254, 0.15); gap: 4px; }
         .tab-btn { flex: 1; background-color: transparent; border: none; color: #718096; padding: 10px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 8px; }
         .tab-btn.active { background-color: #bc13fe; color: #ffffff; }
         
@@ -131,28 +130,20 @@
         /* ==========================================================================
            4. SEKSYEN ULASAN
            ========================================================================== */
-        .review-stats-summary { background: rgba(5, 15, 45, 0.7); border: 1px dashed #00ffff; border-radius: 16px; padding: 15px; text-align: center; margin: 20px 0; }
+        .review-stats-summary { background: rgba(5, 15, 45, 0.5); border: 1px dashed #00ffff; border-radius: 16px; padding: 15px; text-align: center; margin: 20px 0; }
         .big-rating-number { font-size: 32px; font-weight: 900; color: #00ffff; text-shadow: 0 0 6px #00ffff; }
         .big-rating-stars { color: #00ffff; font-size: 15px; margin: 5px 0; letter-spacing: 2px; }
         
-        .trigger-review-popup-btn { width: 100%; background: linear-gradient(90deg, #bc13fe, #0a2463); border: 1px solid #00ffff; color: #ffffff; border-radius: 12px; padding: 12px; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-bottom: 15px; text-shadow: 0 0 5px #00ffff; transition: transform 0.15s ease; }
-        .trigger-review-popup-btn:active { transform: scale(0.98); }
-
-        .review-scroll-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
-        .standalone-review-card { background: rgba(5, 15, 45, 0.75); border: 1px solid rgba(188, 19, 254, 0.2); border-radius: 14px; padding: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .review-scroll-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; max-height: 250px; overflow-y: auto; }
+        .standalone-review-card { background: rgba(5, 15, 45, 0.5); border: 1px solid rgba(188, 19, 254, 0.15); border-radius: 14px; padding: 14px; }
         .review-item-stars { color: #00ffff; font-size: 11px; margin-bottom: 6px; display: flex; gap: 3px; }
 
-        /* POPUP MODAL FORM TULIS ULASAN */
-        .review-modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(4, 4, 7, 0.96); z-index: 300; display: flex; justify-content: center; align-items: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease-in-out; }
-        .review-modal-overlay.show { opacity: 1; pointer-events: auto; }
-        
-        .form-review-box { background: #0c0c14; border: 2px solid #bc13fe; border-radius: 20px; padding: 20px; width: 100%; box-shadow: 0 0 25px rgba(188, 19, 254, 0.5); }
-        .form-box-title { font-size: 14px; font-weight: 800; color: #00ffff; text-transform: uppercase; margin-bottom: 15px; text-shadow: 0 0 4px #00ffff; text-align: center; }
-        .input-field { width: 100%; background: #080b16; border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 8px; padding: 11px; color: #ffffff; font-size: 12px; outline: none; margin-top: 4px; }
-        .submit-review-btn { width: 100%; background: #bc13fe; color: #ffffff; border: none; border-radius: 10px; padding: 12px; font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 15px; }
-        .close-review-popup-btn { width: 100%; background: transparent; border: 1px solid #718096; color: #718096; border-radius: 10px; padding: 10px; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 8px; }
+        .form-review-box { background: rgba(12, 12, 20, 0.65); border: 1px solid #bc13fe; border-radius: 18px; padding: 18px; }
+        .form-box-title { font-size: 14px; font-weight: 800; color: #00ffff; text-transform: uppercase; margin-bottom: 12px; text-shadow: 0 0 4px #00ffff; }
+        .input-field { width: 100%; background: #080b16; border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 8px; padding: 10px; color: #ffffff; font-size: 12px; outline: none; margin-top: 4px; }
+        .submit-review-btn { width: 100%; background: linear-gradient(90deg, #bc13fe, #0a2463); color: #ffffff; border: none; border-radius: 10px; padding: 12px; font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
 
-        /* FOOTER & MODAL ABOUT STORE */
+        /* MODAL WINDOWS */
         .footer-privacy { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: center; align-items: center; gap: 15px; position: relative; z-index: 10; }
         .privacy-link { color: #718096; font-size: 12px; text-decoration: none; background: none; border: none; cursor: pointer; transition: text-shadow 0.15s ease, color 0.15s ease; }
         .privacy-link:hover, .privacy-link:active { color: #00ffff; text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
@@ -165,18 +156,23 @@
         .modal-close-btn { background: #bc13fe; color: #ffffff; border: none; padding: 10px 20px; font-size: 12px; font-weight: 700; border-radius: 12px; cursor: pointer; width: 100%; }
 
         /* ==========================================================================
-           5. NAV BAR BAWAH BAR HIGH-TECH GLOW
+           5. REVISI BAR MENU BAWAH: DINAIKKAN AMAN DARI BOTTOM DAN GLOW MAKSIMAL
            ========================================================================== */
         .bottom-nav { 
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 75px; 
-            background: rgba(13, 13, 19, 0.4); 
-            border-top: 2px solid #bc13fe; 
+            position: absolute; 
+            bottom: 16px; /* REVISI: Dinaikkan biar pas presisi menggantung di atas dagu HP PC */
+            left: 5%; 
+            width: 90%; /* Memberikan ruang sisi kanan kiri agar melayang estetik */
+            height: 75px; 
+            background: rgba(13, 13, 19, 0.45); 
+            border: 1px solid rgba(188, 19, 254, 0.6);
+            border-radius: 18px; /* Dibuat melengkung membulat mandiri */
             backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
             display: flex; justify-content: space-evenly; align-items: center; z-index: 100; 
-            box-shadow: 0 -4px 25px rgba(188, 19, 254, 0.3);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+            transition: all 0.2s ease;
         }
-        @media (min-width: 480px) { .bottom-nav { border-radius: 0 0 22px 22px; } }
         
         .nav-item { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
@@ -186,19 +182,20 @@
         }
 
         .nav-mini-bot {
-            width: 26px; height: 24px; object-fit: contain;
-            margin-bottom: 4px; opacity: 0.35; filter: grayscale(1);
+            width: 28px; height: 26px; object-fit: contain;
+            margin-bottom: 3px; opacity: 0.35; filter: grayscale(1);
             transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
         }
         
+        /* FIX SAKTI: Warna lampu neon tulisan bawah langsung pendar terang menyengat */
         .nav-item.active { 
             color: #00ffff !important; 
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff, 0 0 45px #bc13fe !important;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff, 0 0 50px #bc13fe !important;
         }
         
         .nav-item.active .nav-mini-bot {
-            opacity: 1 !important; filter: grayscale(0) drop-shadow(0 0 6px #00ffff) !important;
-            transform: scale(1.12);
+            opacity: 1 !important; filter: grayscale(0) drop-shadow(0 0 8px #00ffff) !important;
+            transform: scale(1.15);
         }
         
         .nav-dot { width: 4px; height: 4px; background-color: transparent; border-radius: 50%; margin-top: 3px; transition: all 0.2s ease; }
@@ -218,44 +215,17 @@
 
         <div id="about-modal" class="modal-overlay">
             <div class="modal-card">
-                <div class="modal-header">About DYLF STOREacc</div>
+                <div class="modal-header">About Us</div>
                 <div class="modal-body-text">
-                    <strong>DYLF STOREacc</strong> adalah platform digital terintegrasi yang bergerak di bidang penyediaan layanan Jual-Beli Akun Game premium serta Jasa Rekening Bersama (Rekber) digital terpercaya yang didirikan dan dikelola langsung oleh <strong>Dileppp</strong>.<br><br>
-                    Kami berkomitmen penuh untuk menghadirkan ekosistem transaksi yang super aman, transparan, instan, dan bebas dari segala bentuk penipuan siber. Dengan ribuan riwayat transaksi sukses dan dukungan saringan admin yang ketat, platform ini hadir sebagai solusi utama bagi para gamers dan pelaku industri digital di Indonesia untuk bertransaksi tanpa rasa khawatir. 🌱
+                    <strong>DYLF STOREacc</strong> adalah platform platform Jual-Beli Akun Game serta Jasa Rekber digital terpercaya buatan <strong>Dileppp</strong>.
                 </div>
-                <button class="modal-close-btn" onclick="toggleAboutModal(false)">TUTUP JENDELA SIBER</button>
-            </div>
-        </div>
-
-        <div id="review-popup-modal" class="review-modal-overlay">
-            <div class="form-review-box">
-                <div class="form-box-title">✍️ Bagikan Pengalaman Transaksi</div>
-                <form id="review-form">
-                    <div style="margin-bottom: 12px;">
-                        <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Nama / Nickname Kamu</label>
-                        <input type="text" name="nama" id="form-nama" class="input-field" placeholder="Masukan nama lengkap..." required maxlength="30">
-                    </div>
-                    <div style="margin-bottom: 12px;">
-                        <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Rating Kepuasan</label>
-                        <select name="rating" id="form-rating" class="input-field" style="color:#00ffff; font-weight:bold;">
-                            <option value="5">⭐⭐⭐⭐⭐ 5 - Sangat Puas / Rekomended</option>
-                            <option value="4">⭐⭐⭐⭐ 4 - Puas / Cepat</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 12px;">
-                        <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Isi Ulasan Pengalaman</label>
-                        <textarea name="text" id="form-text" class="input-field" rows="4" placeholder="Tulis testimoni kejujuran kamu di sini..." required maxlength="200"></textarea>
-                    </div>
-                    <div id="status-msg" style="font-size:11px; color:#00ffff; text-align:center; margin-top:5px; display:none; margin-bottom:5px;"></div>
-                    <button type="submit" class="submit-review-btn">KIRIM TESTIMONI KONSUMEN</button>
-                    <button type="button" class="close-review-popup-btn" onclick="toggleReviewPopup(false)">BATALKAN</button>
-                </form>
+                <button class="modal-close-btn" onclick="toggleAboutModal(false)">TUTUP</button>
             </div>
         </div>
 
         <div class="scroll-content" id="main-scroll">
-            <div class="store-banner" id="bannerWrapper">
-                <img src="/static/bannerdf2.png" class="banner-img" id="mainStoreBanner" alt="Banner Dinamis">
+            <div class="store-banner">
+                <img src="/static/banner.png" class="banner-img" alt="Banner">
             </div>
             
             <div class="main-content-wrapper">
@@ -319,12 +289,29 @@
                         </div>
                         <div style="font-size:11px; color:#a0aec0; font-weight:bold; text-transform: uppercase;">KEPUASAN PELANGGAN DYLF STOREacc</div>
                     </div>
-
-                    <button class="trigger-review-popup-btn" onclick="toggleReviewPopup(true)">
-                        <i class="fa-solid fa-pen-to-square" style="margin-right:6px;"></i> Tulis Ulasan Kamu
-                    </button>
-
                     <div class="review-scroll-container" id="review-list"></div>
+                    <div class="form-review-box">
+                        <div class="form-box-title">✍️ Bagikan Pengalaman Transaksi</div>
+                        <form id="review-form">
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Nama / Nickname Kamu</label>
+                                <input type="text" name="nama" id="form-nama" class="input-field" placeholder="Masukan nama lengkap..." required maxlength="30">
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Rating Kepuasan</label>
+                                <select name="rating" id="form-rating" class="input-field" style="color:#00ffff; font-weight:bold;">
+                                    <option value="5">⭐⭐⭐⭐⭐ 5 - Sangat Puas / Rekomended</option>
+                                    <option value="4">⭐⭐⭐⭐ 4 - Puas / Cepat</option>
+                                </select>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Isi Ulasan Pengalaman</label>
+                                <textarea name="text" id="form-text" class="input-field" rows="3" placeholder="Tulis testimoni kejujuran kamu di sini..." required maxlength="200"></textarea>
+                            </div>
+                            <div id="status-msg" style="font-size:11px; color:#00ffff; text-align:center; margin-top:10px; display:none; margin-bottom:10px;"></div>
+                            <button type="submit" class="submit-review-btn">KIRIM TESTIMONI KONSUMEN</button>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="footer-privacy">
@@ -338,17 +325,17 @@
 
         <div class="bottom-nav">
             <div id="btn-nav-home" class="nav-item active" onclick="switchPage('home')">
-                <img src="/static/images/menudf1.png" class="nav-mini-bot" alt="home-bot" onerror="this.src='/static/menudf1.png'">
+                <img src="/static/menudf1.png" class="nav-mini-bot" alt="home-bot">
                 <span>HOME</span>
                 <div class="nav-dot"></div>
             </div>
             <div id="btn-nav-testi" class="nav-item" onclick="switchPage('testi')">
-                <img src="/static/images/menudf2.png" class="nav-mini-bot" alt="testi-bot" onerror="this.src='/static/menudf2.png'">
+                <img src="/static/menudf2.png" class="nav-mini-bot" alt="testi-bot">
                 <span>TESTIMONI</span>
                 <div class="nav-dot"></div>
             </div>
             <div id="btn-nav-ulasan" class="nav-item" onclick="switchPage('ulasan')">
-                <img src="/static/images/menudf3.png" class="nav-mini-bot" alt="ulasan-bot" onerror="this.src='/static/menudf3.png'">
+                <img src="/static/menudf3.png" class="nav-mini-bot" alt="ulasan-bot">
                 <span>ULASAN</span>
                 <div class="nav-dot"></div>
             </div>
@@ -365,17 +352,9 @@
             else modal.classList.remove('show');
         }
 
-        function toggleReviewPopup(show) {
-            const rModal = document.getElementById('review-popup-modal');
-            if(show) rModal.classList.add('show');
-            else rModal.classList.remove('show');
-        }
-
         function switchPage(pageName) {
             const loader = document.getElementById('loading-screen');
             loader.classList.remove('hide');
-            
-            let delayWaktu = (pageName === 'testi') ? 650 : 400;
             
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
@@ -391,24 +370,12 @@
                 if (currentBtn) {
                     currentBtn.classList.add('active');
                 }
-
-                const bannerContainer = document.getElementById('bannerWrapper');
-                const bannerImg = document.getElementById('mainStoreBanner');
-
-                if (pageName === 'home') {
-                    bannerContainer.style.display = 'none';
-                } else if (pageName === 'testi') {
-                    bannerContainer.style.display = 'block';
-                    bannerImg.src = '/static/bannerdf2.png';
-                    ambilFotoTesti('stok'); 
-                } else if (pageName === 'ulasan') {
-                    bannerContainer.style.display = 'block';
-                    bannerImg.src = '/static/bannerdf3.png';
-                    ambilUlasanCloud(); 
-                }
+                
+                if(pageName === 'testi') { ambilFotoTesti('stok'); } 
+                else if(pageName === 'ulasan') { ambilUlasanCloud(); }
                 
                 setTimeout(() => { loader.classList.add('hide'); }, 100);
-            }, delayWaktu);
+            }, 400);
         }
 
         async function ambilFotoTesti(kategori) {
@@ -482,9 +449,7 @@
                     const respon = await fetch('/tambah-ulasan', { method: 'POST', body: dataForm });
                     const hasil = await respon.json();
                     if (hasil.success) {
-                        msg.innerText = hasil.message; 
-                        setTimeout(() => { toggleReviewPopup(false); formUlasan.reset(); }, 1500);
-                        ambilUlasanCloud();
+                        msg.innerText = hasil.message; formUlasan.reset(); ambilUlasanCloud();
                     } else { msg.innerText = 'Gagal: ' + hasil.message; }
                 } catch (err) { msg.innerText = 'Gagal terhubung ke server.'; }
             });
