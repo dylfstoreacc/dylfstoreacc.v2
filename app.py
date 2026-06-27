@@ -7,18 +7,17 @@ import os
 app = Flask(__name__)
 
 # ==========================================================================
-# 1. KONFIGURASI GERBANG CLOUD DATABASE SUPABASE (FIX CONFURGATION BENTROK SDK)
+# 1. KONFIGURASI GERBANG CLOUD DATABASE SUPABASE (FIX BENTROK SDK)
 # ==========================================================================
 SUPABASE_URL = "https://pydgbguisbkjzgoixrir.supabase.co"
 SUPABASE_KEY = "eyJhY2ciOiI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInN1YiI6Im1vYjE1NzY5ImV4cCI6MTFubFub24lc2lyb252b4cmlyIiwiY210IiwicXQiOjE3MDg2YmJN5ZGdiZ3Vpc2Jranpnb2l4cmlyR2F2Fl2Kliejo"
 
-# FIX SAKTI: Memaksa ClientOptions mengabaikan konfigurasi proxy otomatis bawaan SDK lama yang bikin crash
+# Fix Supabase SDK Error: Mengabaikan proxy otomatis bawaan yang bikin crash di Render
 opsi_siber = ClientOptions(
     postgrest_client_timeout=10,
     storage_client_timeout=10
 )
 
-# Buat client dengan menyuntikkan opsi bersih bebas bentrok
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY, options=opsi_siber)
 
 
@@ -54,7 +53,7 @@ def ambil_foto_testimoni(kategori):
 
 
 # ==========================================================================
-# 3. JALUR AMBIL & KIRIM ULASAN REAL-TIME DENGAN NOTIF AUTOMATION TANGGAL
+# 3. JALUR AMBIL & KIRIM ULASAN REAL-TIME SUPABASE CLOUD
 # ==========================================================================
 
 @app.route('/ulasan', methods=['GET'])
