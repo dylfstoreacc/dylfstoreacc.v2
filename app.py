@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from supabase.client import ClientOptions
 from supabase import create_client, Client
 from datetime import datetime
 import os
@@ -6,11 +7,19 @@ import os
 app = Flask(__name__)
 
 # ==========================================================================
-# 1. KONFIGURASI GERBANG CLOUD DATABASE SUPABASE
+# 1. KONFIGURASI GERBANG CLOUD DATABASE SUPABASE (FIX CONFURGATION BENTROK SDK)
 # ==========================================================================
 SUPABASE_URL = "https://pydgbguisbkjzgoixrir.supabase.co"
 SUPABASE_KEY = "eyJhY2ciOiI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInN1YiI6Im1vYjE1NzY5ImV4cCI6MTFubFub24lc2lyb252b4cmlyIiwiY210IiwicXQiOjE3MDg2YmJN5ZGdiZ3Vpc2Jranpnb2l4cmlyR2F2Fl2Kliejo"
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# FIX SAKTI: Memaksa ClientOptions mengabaikan konfigurasi proxy otomatis bawaan SDK lama yang bikin crash
+opsi_siber = ClientOptions(
+    postgrest_client_timeout=10,
+    storage_client_timeout=10
+)
+
+# Buat client dengan menyuntikkan opsi bersih bebas bentrok
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY, options=opsi_siber)
 
 
 # ==========================================================================
@@ -51,7 +60,6 @@ def ambil_foto_testimoni(kategori):
 @app.route('/ulasan', methods=['GET'])
 def ambil_ulasan():
     try:
-        # Menampilkan testimoni yang lolos moderasi/approved dari database cloud kamu
         respon = supabase.table('ulasan').select('*').eq('status', 'approved').order('id', desc=True).execute()
         return jsonify(respon.data)
     except Exception as e:
@@ -65,7 +73,6 @@ def tambah_ulasan():
         rating = int(request.form.get('rating', 5))
         text = request.form.get('text')
         
-        # Otomatisasi generate waktu lokal siber saat ulasan masuk ke sistem
         tanggal_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M")
         
         data_ulasan = {
@@ -73,7 +80,7 @@ def tambah_ulasan():
             "rating": rating,
             "text": text,
             "tanggal": tanggal_sekarang,
-            "status": "approved" # Langsung diset approved agar instan muncul di layar web, Leppp!
+            "status": "approved"
         }
         
         supabase.table('ulasan').insert(data_ulasan).execute()
@@ -83,5 +90,9 @@ def tambah_ulasan():
         return jsonify({"success": False, "message": str(e)})
 
 
+# ==========================================================================
+# 4. PEMICU JALUR SERVER PRODUCTION RENDER
+# ==========================================================================
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port_render = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port_render, debug=False)
