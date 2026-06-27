@@ -1,121 +1,87 @@
-import os
 from flask import Flask, render_template, request, jsonify
-from datetime import datetime
 from supabase import create_client, Client
+from datetime import datetime
+import os
 
 app = Flask(__name__)
 
 # ==========================================================================
-# CONFIG & KONEKSI DB CLOUD SUPABASE
+# 1. KONFIGURASI GERBANG CLOUD DATABASE SUPABASE
 # ==========================================================================
-# Pastikan kamu sudah mengisi Environment Variables ini di Render 
-# atau memasukkan string URL & KEY Supabase milikmu secara langsung di sini.
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://xyz.supabase.co")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "your-supabase-anon-key")
-
-# Inisialisasi Klien Supabase
-try:
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-except Exception as e:
-    print(f"Peringatan: Gagal terhubung ke Supabase. Log: {e}")
-    supabase = None
+SUPABASE_URL = "https://pydgbguisbkjzgoixrir.supabase.co"
+SUPABASE_KEY = "eyJhY2ciOiI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInN1YiI6Im1vYjE1NzY5ImV4cCI6MTFubFub24lc2lyb252b4cmlyIiwiY210IiwicXQiOjE3MDg2YmJN5ZGdiZ3Vpc2Jranpnb2l4cmlyR2F2Fl2Kliejo"
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
 # ==========================================================================
-# ROUTE UTAMA (MEMUAT HALAMAN WEB)
+# 2. RUTE UTAMA & API TESTIMONI BERDASARKAN WAKTU UPLOAD TERBARU (DESCENDING)
 # ==========================================================================
+
 @app.route('/')
 def home():
-    # Merender template index.html siber buatan kita
     return render_template('index.html')
 
 
-# ==========================================================================
-# ENDPOINT API: AMBIL FOTO TESTIMONI SECARA DINAMIS
-# ==========================================================================
-@app.route('/api/testi/<kategori>')
-def ambil_testi(kategori):
-    # Memastikan hanya membaca kategori 'stok' atau 'rekber'
-    if kategori not in ['stok', 'rekber']:
+@app.route('/api/testi/<kategori>', methods=['GET'])
+def ambil_foto_testimoni(kategori):
+    try:
+        folder_path = os.path.join('static', 'testi', kategori)
+        if not os.path.exists(folder_path):
+            return jsonify([])
+            
+        daftar_file = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+        
+        file_dengan_waktu = []
+        for file_name in daftar_file:
+            full_path = os.path.join(folder_path, file_name)
+            waktu_modifikasi = os.path.getmtime(full_path)
+            file_dengan_waktu.append((file_name, waktu_modifikasi))
+            
+        file_dengan_waktu.sort(key=lambda x: x[1], reverse=True)
+        urls_gambar = [f'/static/testi/{kategori}/{x[0]}' for x in file_dengan_waktu]
+        return jsonify(urls_gambar)
+    except Exception as e:
         return jsonify([])
 
-    folder_target = os.path.join('static', 'testi', kategori)
-    urls_gambar = []
-
-    # Cek apakah folder tersebut eksis di server
-    if os.path.exists(folder_target):
-        for file in os.listdir(folder_target):
-            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif')):
-                # Buat format URL web yang valid untuk dibaca oleh JavaScript Frontend
-                urls_gambar.append(f'/static/testi/{kategori}/{file}')
-    
-    return jsonify(urls_gambar)
-
 
 # ==========================================================================
-# ENDPOINT API: AMBIL ULASAN YANG SUDAH DI-APPROVED DARI SUPABASE
+# 3. JALUR AMBIL & KIRIM ULASAN REAL-TIME DENGAN NOTIF AUTOMATION TANGGAL
 # ==========================================================================
+
 @app.route('/ulasan', methods=['GET'])
 def ambil_ulasan():
-    if not supabase:
-        return jsonify([])
-    
     try:
-        # Mengambil ulasan yang berstatus 'approved' dan diurutkan dari yang paling baru
-        respon = supabase.table('ulasan')\
-            .select('*')\
-            .eq('status', 'approved')\
-            .order('id', desc=True)\
-            .execute()
-        
+        # Menampilkan testimoni yang lolos moderasi/approved dari database cloud kamu
+        respon = supabase.table('ulasan').select('*').eq('status', 'approved').order('id', desc=True).execute()
         return jsonify(respon.data)
     except Exception as e:
-        print(f"Error ambil data ulasan: {e}")
         return jsonify([])
 
 
-# ==========================================================================
-# ENDPOINT API: KONSUMEN TULIS ULASAN BARU (MASUK FILTER PENDING)
-# ==========================================================================
 @app.route('/tambah-ulasan', methods=['POST'])
 def tambah_ulasan():
-    if not supabase:
-        return jsonify({'success': False, 'message': 'Sistem database belum terkonfigurasi.'})
-    
     try:
-        nama = request.form.get('nama', 'Anonim').strip()
+        nama = request.form.get('nama')
         rating = int(request.form.get('rating', 5))
-        text = request.form.get('text', '').strip()
-        tanggal_sekarang = datetime.now().strftime('%d %b %Y')
-
-        if not text:
-            return jsonify({'success': False, 'message': 'Isi ulasan tidak boleh kosong.'})
-
-        # Data ulasan baru yang akan dimasukkan ke tabel Supabase
-        data_baru = {
-            'nama': nama,
-            'rating': rating,
-            'text': text,
-            'tanggal': tanggal_sekarang,
-            'status': 'pending'  # Otomatis pending agar bisa kamu saring dulu lewat dashboard Supabase
-        }
-
-        supabase.table('ulasan').insert(data_baru).execute()
+        text = request.form.get('text')
         
-        return jsonify({
-            'success': True, 
-            'message': 'Ulasan berhasil terkirim! Menunggu persetujuan saringan admin Dileppp agar muncul live.'
-        })
+        # Otomatisasi generate waktu lokal siber saat ulasan masuk ke sistem
+        tanggal_sekarang = datetime.now().strftime("%Y-%m-%d %H:%M")
+        
+        data_ulasan = {
+            "nama": nama,
+            "rating": rating,
+            "text": text,
+            "tanggal": tanggal_sekarang,
+            "status": "approved" # Langsung diset approved agar instan muncul di layar web, Leppp!
+        }
+        
+        supabase.table('ulasan').insert(data_ulasan).execute()
+        return jsonify({"success": True, "message": f"🌱 Transaksi Berhasil! Ulasan siber {nama} sukses disuntikkan ke cloud database!"})
+        
     except Exception as e:
-        print(f"Error tambah ulasan baru: {e}")
-        return jsonify({'success': False, 'message': 'Terjadi kesalahan sistem saat mengirim ulasan.'})
+        return jsonify({"success": False, "message": str(e)})
 
 
-# ==========================================================================
-# EKSEKUSI SERVER DINAMIS CLOUD (ANTI-ERROR PORT RENDER)
-# ==========================================================================
 if __name__ == '__main__':
-    # Server Render akan otomatis mengisi variabel PORT lingkungan ini secara mandiri
-    port = int(os.environ.get("PORT", 5000))
-    # debug di-set False agar pengeksekusi gunicorn stabil & aman di server cloud
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(debug=True, port=5000)
