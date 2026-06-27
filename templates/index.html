@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ==========================================================================
-           1. LAYOUT CORE & BACKGROUND MURNI TRANSPARAN
+           1. CORE LAYOUT & BACKGROUND KUSTOM (MURNI TRANSPARAN 100%)
            ========================================================================== */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
@@ -42,7 +42,7 @@
             }
         }
 
-        /* INTRUDER LOADER KILAT TRANSISI */
+        /* SCREEN CYBER LOADING TRANSISI KILAT MENU */
         .cyber-loader-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #040407; z-index: 999; display: flex; justify-content: center; align-items: center; opacity: 1; transition: opacity 0.25s ease-in-out; }
         .cyber-loader-screen.hide { opacity: 0; pointer-events: none; }
         .cosmic-loader-wrapper { position: relative; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; }
@@ -52,33 +52,28 @@
         @keyframes cosmicPulse { 0%, 100% { transform: scale(0.97); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 20px #00ffff); } }
         @keyframes ringRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* REVISI: Padding bawah dinaikkan agar konten tidak tertutup bar menu transparan */
-        .scroll-content { flex: 1; overflow-y: auto; padding-bottom: 110px; -webkit-overflow-scrolling: touch; position: relative; }
+        /* Jarak aman bagian bawah konten agar tidak terpotong nav menu */
+        .scroll-content { flex: 1; overflow-y: auto; padding-bottom: 95px; -webkit-overflow-scrolling: touch; position: relative; }
         .scroll-content::-webkit-scrollbar { width: 0px; }
 
-        /* BANNER PROPORSIONAL LEPAS RATA ATAS */
+        /* FIX BANNER: Dikembalikan ke ukuran fix agar gambar tidak pecah atau broken */
         .store-banner { 
             width: 100%; 
-            height: auto; 
-            overflow: visible; 
+            height: 130px; 
+            overflow: hidden; 
             position: relative; 
             background: transparent;
-            margin-top: 16px; 
-            padding: 0 8px; 
+            margin-top: 14px; 
+            padding: 0 10px; 
         }
-        .banner-img { 
-            width: 100%; 
-            height: auto; 
-            object-fit: contain; 
-            border-radius: 0 0 12px 12px; 
-        }
+        .banner-img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
         .main-content-wrapper { padding: 0 20px; position: relative; }
 
         .page-section { display: none; opacity: 0; }
         .page-section.active { display: block; opacity: 1; transition: opacity 0.15s ease-in-out; }
 
         /* ==========================================================================
-           2. ANIMASI GARIS KELAP-KELIP SIBER
+           2. ANIMASI GARIS KELAP-KELIP HIDUP (NEON BLINK)
            ========================================================================== */
         @keyframes neonBlinkLine {
             0%, 100% { border-color: rgba(188, 19, 254, 0.8); box-shadow: 0 0 12px rgba(188, 19, 254, 0.4); }
@@ -143,7 +138,7 @@
         .input-field { width: 100%; background: #080b16; border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 8px; padding: 10px; color: #ffffff; font-size: 12px; outline: none; margin-top: 4px; }
         .submit-review-btn { width: 100%; background: linear-gradient(90deg, #bc13fe, #0a2463); color: #ffffff; border: none; border-radius: 10px; padding: 12px; font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
 
-        /* MODAL WINDOWS */
+        /* FOOTER & ABOUT STORE MODAL */
         .footer-privacy { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: center; align-items: center; gap: 15px; position: relative; z-index: 10; }
         .privacy-link { color: #718096; font-size: 12px; text-decoration: none; background: none; border: none; cursor: pointer; transition: text-shadow 0.15s ease, color 0.15s ease; }
         .privacy-link:hover, .privacy-link:active { color: #00ffff; text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
@@ -156,23 +151,22 @@
         .modal-close-btn { background: #bc13fe; color: #ffffff; border: none; padding: 10px 20px; font-size: 12px; font-weight: 700; border-radius: 12px; cursor: pointer; width: 100%; }
 
         /* ==========================================================================
-           5. REVISI BAR MENU BAWAH: DINAIKKAN AMAN DARI BOTTOM DAN GLOW MAKSIMAL
+           5. FIX NAV BAR BAWAH: MENGUNCI RAPAT DAN AMAN DI SEMUA HP PC (ANTI COPT/AMBLAS)
            ========================================================================== */
         .bottom-nav { 
             position: absolute; 
-            bottom: 16px; /* REVISI: Dinaikkan biar pas presisi menggantung di atas dagu HP PC */
-            left: 5%; 
-            width: 90%; /* Memberikan ruang sisi kanan kiri agar melayang estetik */
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
             height: 75px; 
-            background: rgba(13, 13, 19, 0.45); 
-            border: 1px solid rgba(188, 19, 254, 0.6);
-            border-radius: 18px; /* Dibuat melengkung membulat mandiri */
+            background: rgba(13, 13, 19, 0.65); /* Modifikasi siber transparan tipis gahar */
+            border-top: 2px solid #bc13fe; 
             backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
             display: flex; justify-content: space-evenly; align-items: center; z-index: 100; 
-            box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
-            transition: all 0.2s ease;
+            box-shadow: 0 -4px 25px rgba(188, 19, 254, 0.35);
         }
+        @media (min-width: 480px) { .bottom-nav { border-radius: 0 0 22px 22px; } }
         
         .nav-item { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
@@ -182,20 +176,20 @@
         }
 
         .nav-mini-bot {
-            width: 28px; height: 26px; object-fit: contain;
-            margin-bottom: 3px; opacity: 0.35; filter: grayscale(1);
+            width: 26px; height: 24px; object-fit: contain;
+            margin-bottom: 4px; opacity: 0.35; filter: grayscale(1);
             transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
         }
         
-        /* FIX SAKTI: Warna lampu neon tulisan bawah langsung pendar terang menyengat */
+        /* FIX LAMPU NEON JALUR KLIK MENYALA TERANG MENYENGAT */
         .nav-item.active { 
             color: #00ffff !important; 
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff, 0 0 50px #bc13fe !important;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff, 0 0 45px #bc13fe !important;
         }
         
         .nav-item.active .nav-mini-bot {
-            opacity: 1 !important; filter: grayscale(0) drop-shadow(0 0 8px #00ffff) !important;
-            transform: scale(1.15);
+            opacity: 1 !important; filter: grayscale(0) drop-shadow(0 0 6px #00ffff) !important;
+            transform: scale(1.12);
         }
         
         .nav-dot { width: 4px; height: 4px; background-color: transparent; border-radius: 50%; margin-top: 3px; transition: all 0.2s ease; }
