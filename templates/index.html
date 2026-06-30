@@ -3,443 +3,663 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DYLF STORE OFFICIAL</title>
+    <title>Aidil Fitrian - Portfolio & DYLF STORE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ==========================================================================
-           1. CORE LAYOUT & BACKGROUND KUSTOM (MURNI TRANSPARAN 100%)
+           1. CORE CYBER LAYOUT & GLASSMORPHISM BASE
            ========================================================================== */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            scroll-behavior: smooth;
         }
         
         body { 
-            background-color: #030306; 
-            background-image: url('/static/backgroundf.png');
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat;
-            color: #ffffff; display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; overflow: hidden;
-        }
-        
-        .phone-container { 
-            width: 100vw; height: 100vh; 
-            background-color: transparent; 
-            display: flex; flex-direction: column; position: relative; overflow: hidden; 
-            will-change: transform;
+            background-color: #040209; 
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(188, 19, 254, 0.08) 0%, transparent 45%),
+                url('/static/backgroundf.png');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #ffffff; overflow-x: hidden;
         }
 
-        @media (min-width: 480px) {
-            .phone-container {
-                max-width: 430px; max-height: 880px; 
-                border: 2px solid #bc13fe; 
-                box-shadow: 0 0 35px rgba(188, 19, 254, 0.5); 
-                border-radius: 24px;
-                background-color: transparent; 
-                backdrop-filter: none; 
-            }
+        /* Web Scrollbar customization */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #040209; }
+        ::-webkit-scrollbar-thumb { background: #bc13fe; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ffff; }
+
+        /* Global Section Layout */
+        section {
+            min-height: 100vh;
+            padding: 100px 10% 60px 10%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
         }
 
-        /* SCREEN CYBER LOADING TRANSISI KILAT MENU */
-        .cyber-loader-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #040407; z-index: 999; display: flex; justify-content: center; align-items: center; opacity: 1; transition: opacity 0.25s ease-in-out; }
-        .cyber-loader-screen.hide { opacity: 0; pointer-events: none; }
-        .cosmic-loader-wrapper { position: relative; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; }
-        .load-logo { width: 115px; height: 115px; object-fit: contain; filter: drop-shadow(0 0 8px #bc13fe); animation: cosmicPulse 2s infinite ease-in-out; z-index: 10; }
-        .cosmic-glow-ring { position: absolute; width: 160px; height: 160px; border-radius: 50%; border: 2px solid transparent; border-top-color: #00ffff; border-bottom-color: #bc13fe; filter: drop-shadow(0 0 10px #00ffff); animation: ringRotate 2s infinite linear; }
-        
-        @keyframes cosmicPulse { 0%, 100% { transform: scale(0.97); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 20px #00ffff); } }
-        @keyframes ringRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Jarak gulung konten disesuaikan agar pas di atas nav bar melayang */
-        .scroll-content { flex: 1; overflow-y: auto; padding-bottom: 110px; -webkit-overflow-scrolling: touch; position: relative; }
-        .scroll-content::-webkit-scrollbar { width: 0px; }
-
-        /* BANNER STABIL UNTUK MENU NON-HOME */
-        .store-banner { 
-            width: 100%; 
-            height: 130px; 
-            overflow: hidden; 
-            position: relative; 
-            background: transparent;
-            margin-top: 14px; 
-            margin-bottom: 10px;
+        /* Title Sections Header */
+        .section-title {
+            font-size: 36px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 2px; text-align: center; margin-bottom: 40px;
+            color: #ffffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
         }
-        .banner-img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
-        .main-content-wrapper { padding: 0 20px; position: relative; }
-
-        .page-section { display: none; opacity: 0; }
-        .page-section.active { display: block; opacity: 1; transition: opacity 0.15s ease-in-out; }
+        .section-title span { color: #00ffff; text-shadow: 0 0 12px #00ffff; }
 
         /* ==========================================================================
-           2. ANIMASI GARIS KELAP-KELIP HIDUP (NEON BLINK)
+           2. NAVIGATION BAR MELAYANG TRANSPARAN (HEADER NAVBAR)
            ========================================================================== */
-        @keyframes neonBlinkLine {
-            0%, 100% { border-color: rgba(188, 19, 254, 0.8); box-shadow: 0 0 12px rgba(188, 19, 254, 0.4); }
-            50% { border-color: rgba(0, 255, 255, 0.8); box-shadow: 0 0 12px rgba(0, 255, 255, 0.4); }
+        .cyber-header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 20px 10%; display: flex; justify-content: space-between;
+            align-items: center; z-index: 1000;
+            background: rgba(4, 2, 9, 0.65);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(188, 19, 254, 0.25);
+        }
+        .logo-brand {
+            font-size: 22px; font-weight: 900; color: #ffffff;
+            text-decoration: none; letter-spacing: 1px;
+        }
+        .logo-brand span { color: #00ffff; text-shadow: 0 0 8px #00ffff; }
+        
+        .navbar-links { display: flex; gap: 30px; list-style: none; }
+        .navbar-links a {
+            color: #a0aec0; text-decoration: none; font-size: 14px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease; position: relative; padding: 5px 0;
+        }
+        .navbar-links a:hover, .navbar-links a.active {
+            color: #00ffff; text-shadow: 0 0 10px #00ffff;
         }
 
-        .profile-container { text-align: center; margin-top: 25px; margin-bottom: 15px; }
-        .profile-logo { width: 150px; height: 150px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4)); }
-        .profile-title { font-size: 26px; font-weight: 900; letter-spacing: 1.5px; text-shadow: 0 0 8px #00ffff; color: #ffffff; margin: 10px 0; }
+        /* ==========================================================================
+           3. SECTION 1: WELCOME HERO INTERAKTIF (HOME)
+           ========================================================================== */
+        #home { align-items: center; text-align: center; }
+        .hero-icon-row { display: flex; gap: 20px; margin-bottom: 25px; }
+        .hero-circle-btn {
+            width: 55px; height: 55px; border-radius: 50%;
+            border: 2px solid rgba(188, 19, 254, 0.5);
+            background: rgba(5, 15, 45, 0.4);
+            display: flex; justify-content: center; align-items: center;
+            color: #e2e8f0; font-size: 20px; text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hero-circle-btn:hover {
+            transform: scale(1.15); border-color: #00ffff;
+            color: #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
         
-        .bio-box { 
-            background: rgba(5, 15, 45, 0.55); border: 2px solid #bc13fe; border-radius: 14px; 
-            padding: 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;
+        .welcome-title-text { font-size: 48px; font-weight: 900; letter-spacing: 1px; margin-bottom: 10px; }
+        .typing-wrapper { font-size: 38px; font-weight: 800; color: #bc13fe; text-shadow: 0 0 10px rgba(188, 19, 254, 0.5); margin-bottom: 20px; }
+        .typing-text::after { content: '|'; animation: blinkCursor 0.8s infinite; }
+        @keyframes blinkCursor { 50% { opacity: 0; } }
+
+        .sub-domain-tag {
+            background: rgba(0, 255, 255, 0.08); border: 1px dashed #00ffff;
+            padding: 6px 18px; border-radius: 20px; font-size: 13px;
+            color: #00ffff; font-weight: bold; letter-spacing: 1px;
+        }
+
+        /* ==========================================================================
+           4. SECTION 2: ABOUT ME & EXPERIENCE
+           ========================================================================== */
+        .about-container {
+            display: flex; gap: 50px; align-items: center; max-width: 1100px; margin: 0 auto;
+        }
+        .about-avatar-wrapper {
+            position: relative; width: 280px; height: 280px; flex-shrink: 0;
+        }
+        .about-glow-ring {
+            position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            border: 2px dashed #00ffff; animation: ringRotate 20s infinite linear;
+        }
+        .about-avatar-img {
+            width: 90%; height: 90%; object-fit: cover; border-radius: 50%;
+            position: absolute; top: 5%; left: 5%; border: 3px solid #bc13fe;
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+        }
+        .about-info-text { flex: 1; }
+        .about-info-text h3 { font-size: 28px; font-weight: 800; color: #ffffff; margin-bottom: 15px; }
+        .about-info-text p { color: #cbd5e0; font-size: 15px; line-height: 1.7; margin-bottom: 25px; }
+        
+        .action-btn-row { display: flex; gap: 15px; }
+        .cyber-btn {
+            padding: 12px 28px; font-size: 13px; font-weight: 700; border-radius: 8px;
+            text-transform: uppercase; letter-spacing: 1px; text-decoration: none; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .cyber-btn-purple {
+            background: #bc13fe; color: #ffffff; border: none;
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.4);
+        }
+        .cyber-btn-purple:hover { background: #a60ee2; box-shadow: 0 0 20px rgba(188, 19, 254, 0.7); }
+        .cyber-btn-outline {
+            background: transparent; color: #00ffff; border: 1px solid #00ffff;
+        }
+        .cyber-btn-outline:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); }
+
+        /* Stats Grid Showcase */
+        .stats-grid-container {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+            max-width: 1100px; width: 100%; margin: 40px auto 0 auto;
+        }
+        .stat-card-item {
+            background: rgba(5, 15, 45, 0.4); border: 1px solid rgba(188, 19, 254, 0.2);
+            border-radius: 14px; padding: 20px; text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .stat-card-item:hover { transform: translateY(-5px); border-color: #00ffff; }
+        .stat-number { font-size: 32px; font-weight: 900; color: #00ffff; margin-bottom: 5px; }
+        .stat-label { font-size: 11px; color: #a0aec0; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+
+        /* ==========================================================================
+           5. SECTION 3: DYLF STORE SELECTION (PRODUK AKUN DIGITAL)
+           ========================================================================== */
+        .store-intro-box {
+            background: rgba(5, 15, 45, 0.5); border: 2px solid #bc13fe;
+            border-radius: 16px; padding: 20px; max-width: 900px; margin: 0 auto 30px auto;
+            text-align: center; font-size: 14px; line-height: 1.6; color: #e2e8f0;
             animation: neonBlinkLine 4s infinite ease-in-out;
         }
-
-        .sosmed-instruction-text { text-align: center; font-size: 11px; font-weight: 700; color: #00ffff; text-transform: uppercase; letter-spacing: 2px; margin: 15px 0; text-shadow: 0 0 6px #00ffff; }
-        
-        .sosmed-row { display: flex; justify-content: center; gap: 35px; margin-bottom: 25px; position: relative; z-index: 10; }
-        .sosmed-icon { font-size: 32px; text-decoration: none; background: none; border: none; transition: transform 0.2s ease; display: inline-block; }
-        .sosmed-icon:hover, .sosmed-icon:active { transform: scale(1.15); filter: drop-shadow(0 0 8px currentColor); }
-
-        .wa-links-wrapper { display: flex; flex-direction: column; gap: 12px; position: relative; margin-top: 20px; z-index: 2; }
-        .mascot-absolute-container { position: absolute; left: -15px; bottom: -10px; width: 180px; height: 180px; z-index: 3; pointer-events: none; }
-        .mascot-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4)); }
-
-        .group-card { 
-            background: rgba(5, 15, 45, 0.55); border-left: 4px solid #bc13fe; border-radius: 0 14px 14px 0; 
-            padding: 14px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; 
-            margin-left: 135px; border-top: 1px solid rgba(188,19,254,0.15); border-bottom: 1px solid rgba(188,19,254,0.15); border-right: 1px solid rgba(188,19,254,0.15); 
-            transition: background-color 0.2s;
-            animation: neonBlinkLine 5s infinite ease-in-out;
+        .store-grid-products {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px;
+            max-width: 1100px; width: 100%; margin: 0 auto;
         }
-        .group-card:hover { background: rgba(10, 36, 99, 0.45); }
+        .product-card {
+            background: rgba(11, 11, 17, 0.65); border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 16px; overflow: hidden; transition: all 0.3s ease;
+            position: relative; display: flex; flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-5px); border-color: #bc13fe;
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.3);
+        }
+        .product-img-wrapper { width: 100%; height: 180px; overflow: hidden; background: #000; }
+        .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .product-card:hover .product-img { transform: scale(1.08); }
+        
+        .product-body-details { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .product-tag-game { font-size: 10px; font-weight: 800; color: #00ffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .product-title-name { font-size: 16px; font-weight: 800; color: #ffffff; margin-bottom: 10px; }
+        .product-info-specs { list-style: none; font-size: 12px; color: #a0aec0; margin-bottom: 15px; }
+        .product-info-specs li { margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        .product-info-specs i { color: #bc13fe; font-size: 10px; }
+        
+        .product-footer-price {
+            margin-top: auto; display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 15px;
+        }
+        .price-value-idr { font-size: 18px; font-weight: 900; color: #00ffff; text-shadow: 0 0 5px rgba(0, 255, 255, 0.3); }
 
         /* ==========================================================================
-           3. SEKSYEN TESTIMONI
+           6. SECTION 4: TESTIMONI HISTORY GALLERY (STOK & REKBER)
            ========================================================================== */
-        .testi-section-wrapper { padding: 20px 10px; background-color: rgba(11, 11, 17, 0.55); border: 2px solid rgba(0, 255, 255, 0.2); border-radius: 20px; }
-        .testi-tabs { display: flex; background-color: rgba(5, 15, 45, 0.5); padding: 4px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(188, 19, 254, 0.15); gap: 4px; }
-        .tab-btn { flex: 1; background-color: transparent; border: none; color: #718096; padding: 10px; font-size: 12px; font-weight: 700; cursor: pointer; border-radius: 8px; }
-        .tab-btn.active { background-color: #bc13fe; color: #ffffff; }
+        .showcase-tab-menu {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 30px;
+        }
+        .tab-showcase-btn {
+            background: rgba(5, 15, 45, 0.5); border: 1px solid rgba(188, 19, 254, 0.3);
+            color: #718096; padding: 12px 30px; font-size: 13px; font-weight: 700;
+            border-radius: 10px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase;
+        }
+        .tab-showcase-btn.active, .tab-showcase-btn:hover {
+            background: #bc13fe; color: #ffffff; border-color: #bc13fe;
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.5);
+        }
         
-        .testi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .testi-img-item { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(0, 255, 255, 0.3); transition: transform 0.2s ease, border-color 0.2s; cursor: pointer; }
-        .testi-img-item:hover { transform: scale(1.01); border-color: #bc13fe; }
-        .no-testi-text { text-align: center; color: #718096; font-size: 12px; padding: 20px 0; grid-column: span 2; }
+        .gallery-showcase-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+            max-width: 1100px; width: 100%; margin: 0 auto;
+        }
+        .gallery-item-card {
+            width: 100%; height: 220px; object-fit: cover; border-radius: 12px;
+            border: 1px solid rgba(0, 255, 255, 0.25); cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .gallery-item-card:hover {
+            transform: scale(1.02); border-color: #bc13fe;
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.4);
+        }
 
         /* ==========================================================================
-           4. SEKSYEN ULASAN
+           7. SECTION 5: SYSTEM ULASAN CONSUMER REAL-TIME
            ========================================================================== */
-        .review-stats-summary { background: rgba(5, 15, 45, 0.5); border: 1px dashed #00ffff; border-radius: 16px; padding: 15px; text-align: center; margin: 20px 0; }
-        .big-rating-number { font-size: 32px; font-weight: 900; color: #00ffff; text-shadow: 0 0 6px #00ffff; }
-        .big-rating-stars { color: #00ffff; font-size: 15px; margin: 5px 0; letter-spacing: 2px; }
+        .review-layout-wrapper {
+            display: flex; gap: 30px; max-width: 1100px; width: 100%; margin: 0 auto;
+        }
+        .review-left-stats {
+            flex: 1; max-width: 350px;
+        }
+        .review-right-list {
+            flex: 1.5; display: flex; flex-direction: column; gap: 15px;
+            max-height: 520px; overflow-y: auto; padding-right: 10px;
+        }
         
-        .review-scroll-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; max-height: 250px; overflow-y: auto; }
-        .standalone-review-card { background: rgba(5, 15, 45, 0.5); border: 1px solid rgba(188, 19, 254, 0.15); border-radius: 14px; padding: 14px; }
-        .review-item-stars { color: #00ffff; font-size: 11px; margin-bottom: 6px; display: flex; gap: 3px; }
+        .stats-summary-box {
+            background: rgba(5, 15, 45, 0.5); border: 1px dashed #00ffff;
+            border-radius: 16px; padding: 25px; text-align: center; margin-bottom: 20px;
+        }
+        .stats-rating-num { font-size: 42px; font-weight: 900; color: #00ffff; text-shadow: 0 0 8px #00ffff; }
+        .stats-rating-stars { color: #00ffff; font-size: 16px; margin: 8px 0; letter-spacing: 2px; }
+        .stats-rating-label { font-size: 11px; color: #a0aec0; font-weight: bold; text-transform: uppercase; }
 
-        .form-review-box { background: rgba(12, 12, 20, 0.65); border: 1px solid #bc13fe; border-radius: 18px; padding: 18px; }
-        .form-box-title { font-size: 14px; font-weight: 800; color: #00ffff; text-transform: uppercase; margin-bottom: 12px; text-shadow: 0 0 4px #00ffff; }
-        .input-field { width: 100%; background: #080b16; border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 8px; padding: 10px; color: #ffffff; font-size: 12px; outline: none; margin-top: 4px; }
-        .submit-review-btn { width: 100%; background: linear-gradient(90deg, #bc13fe, #0a2463); color: #ffffff; border: none; border-radius: 10px; padding: 12px; font-size: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .form-review-card {
+            background: rgba(12, 12, 20, 0.65); border: 1px solid #bc13fe;
+            border-radius: 18px; padding: 20px;
+        }
+        .form-review-title { font-size: 14px; font-weight: 800; color: #00ffff; text-transform: uppercase; margin-bottom: 15px; }
 
-        /* FOOTER & POPUP POPUP MODAL WINDOW SYSTEM */
-        .footer-privacy { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: center; align-items: center; gap: 15px; position: relative; z-index: 10; }
-        .privacy-link { color: #718096; font-size: 12px; text-decoration: none; background: none; border: none; cursor: pointer; transition: text-shadow 0.15s ease, color 0.15s ease; }
-        .privacy-link:hover, .privacy-link:active { color: #00ffff; text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
-        
-        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(5, 5, 8, 0.95); z-index: 200; display: flex; justify-content: center; align-items: center; padding: 25px; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
-        .modal-overlay.show { opacity: 1; pointer-events: auto; }
-        .modal-card { width: 100%; max-width: 380px; background-color: #080b16; border: 2px solid #bc13fe; border-radius: 20px; padding: 22px; box-shadow: 0 0 20px rgba(188, 19, 254, 0.4); }
-        .modal-header { color: #00ffff; font-size: 18px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; text-shadow: 0 0 6px #00ffff; border-bottom: 1px dashed rgba(0, 255, 255, 0.2); padding-bottom: 8px; }
-        .modal-body-text { color: #e2e8f0; font-size: 12.5px; line-height: 1.6; margin-bottom: 15px; text-align: left; }
-        .modal-close-btn { background: linear-gradient(90deg, #bc13fe, #0a2463); color: #ffffff; border: none; padding: 11px 20px; font-size: 12px; font-weight: 700; border-radius: 12px; cursor: pointer; width: 100%; letter-spacing: 1px; }
+        .consumer-review-card {
+            background: rgba(5, 15, 45, 0.45); border: 1px solid rgba(188, 19, 254, 0.15);
+            border-radius: 14px; padding: 16px; transition: border-color 0.3s;
+        }
+        .consumer-review-card:hover { border-color: #bc13fe; }
+        .review-card-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; margin-bottom: 5px; }
+        .review-card-stars { color: #00ffff; font-size: 11px; margin-bottom: 8px; display: flex; gap: 3px; }
+        .review-card-body { font-size: 13px; color: #e2e8f0; line-height: 1.5; }
 
         /* ==========================================================================
-           5. FIX SETTING NAV BAR: OTOMATIS MELAYANG DIATAS TOMBOL KURSOR BERANDA HP
+           8. SECTION 6: CONTACT ME FORM SYSTEM
            ========================================================================== */
-        .bottom-nav { 
-            position: absolute; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 75px; 
-            background: rgba(13, 13, 19, 0.7); 
-            border-top: 2px solid #bc13fe; 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            display: flex; justify-content: space-evenly; align-items: center; z-index: 100; 
-            box-shadow: 0 -4px 25px rgba(188, 19, 254, 0.35);
+        .contact-layout-wrapper {
+            display: flex; gap: 40px; max-width: 1100px; width: 100%; margin: 0 auto;
         }
+        .contact-left-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .contact-left-info h3 { font-size: 24px; font-weight: 800; margin-bottom: 15px; }
+        .contact-left-info p { color: #a0aec0; font-size: 14px; line-height: 1.6; margin-bottom: 30px; }
         
-        /* RESPONSIVE SMARTPHONE DETECTOR: Menaikkan tombol menu di atas kursor sistem HP */
-        @media (max-width: 480px) {
-            .bottom-nav {
-                bottom: 14px; /* Naik 14px memberikan jarak aman dari tombol Back/Home HP */
-                left: 4%;
-                width: 92%;
-                border: 2px solid #bc13fe;
-                border-radius: 18px;
-                box-shadow: 0 0 20px rgba(188, 19, 254, 0.5);
-                height: 70px;
-            }
+        .contact-method-item {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+            background: rgba(5, 15, 45, 0.3); padding: 14px 20px; border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        @media (min-width: 480px) { .bottom-nav { border-radius: 0 0 22px 22px; } }
-        
-        .nav-item { 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            color: #51627c; font-size: 10px; font-weight: 800; cursor: pointer; flex: 1; 
-            text-align: center; height: 100%; position: relative; letter-spacing: 1px;
-            transition: color 0.2s ease, text-shadow 0.2s ease;
+        .contact-method-icon { font-size: 22px; color: #00ffff; }
+        .contact-method-detail h4 { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+        .contact-method-detail p { font-size: 12px; color: #cbd5e0; margin: 0; }
+
+        .contact-right-form {
+            flex: 1.2; background: rgba(11, 11, 17, 0.6); border: 1px solid #bc13fe;
+            border-radius: 20px; padding: 30px;
         }
 
-        .nav-mini-bot {
-            width: 26px; height: 24px; object-fit: contain;
-            margin-bottom: 4px; opacity: 0.35; filter: grayscale(1);
-            transition: opacity 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+        /* ==========================================================================
+           9. PRIVACY & FOOTER POPUP SYSTEM
+           ========================================================================== */
+        .cyber-footer {
+            text-align: center; padding: 40px 10px; border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #040209; position: relative; z-index: 10;
         }
-        
-        .nav-item.active { 
-            color: #00ffff !important; 
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 35px #00ffff, 0 0 45px #bc13fe !important;
+        .footer-links-row { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 15px; }
+
+        /* Smartphone adaptation fixes */
+        @media (max-width: 768px) {
+            .cyber-header { padding: 15px 5%; }
+            .navbar-links { display: none; } /* Simpel mobile workaround */
+            section { padding: 80px 5% 40px 5%; }
+            .about-container, .review-layout-wrapper, .contact-layout-wrapper { flex-direction: column; gap: 30px; }
+            .about-avatar-wrapper { margin: 0 auto; }
+            .stats-grid-container { grid-template-columns: repeat(2, 1fr); }
+            .store-grid-products { grid-template-columns: repeat(1, 1fr); }
+            .gallery-showcase-grid { grid-template-columns: repeat(2, 1fr); }
+            .review-left-stats { max-width: 100%; }
         }
-        
-        .nav-item.active .nav-mini-bot {
-            opacity: 1 !important; filter: grayscale(0) drop-shadow(0 0 6px #00ffff) !important;
-            transform: scale(1.12);
-        }
-        
-        .nav-dot { width: 4px; height: 4px; background-color: transparent; border-radius: 50%; margin-top: 3px; transition: all 0.2s ease; }
-        .nav-item.active .nav-dot { background-color: #00ffff; box-shadow: 0 0 8px #00ffff, 0 0 12px #ffffff; }
     </style>
 </head>
 <body>
 
-    <div class="phone-container">
+    <div id="loading-screen" class="cyber-loader-screen">
+        <div class="cosmic-loader-wrapper">
+            <div class="cosmic-glow-ring"></div>
+            <img src="/static/dfstoreacc.png" class="load-logo" alt="Logo">
+        </div>
+    </div>
+
+    <header class="cyber-header">
+        <a href="#home" class="logo-brand">AIDIL<span>FITRIAN</span></a>
+        <ul class="navbar-links">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#store" class="nav-link">Store</a></li>
+            <li><a href="#testi" class="nav-link">Testimoni</a></li>
+            <li><a href="#ulasan" class="nav-link">Ulasan</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+    </header>
+
+    <div id="about-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">About DYLF STOREacc</div>
+            <div class="modal-body-text">
+                Selamat datang di <strong>DYLF STOREacc</strong>, platform ekosistem siber premium penyedia layanan Jual-Beli Akun Game serta Layanan Jasa Rekber Digital terpercaya yang dibangun langsung oleh <strong>Dileppp (Aidil Fitrian)</strong>.<br><br>
+                Kami berkomitmen penuh untuk menghadirkan transaksi gaming yang 100% amanah, kilat, dan terlindungi. Dengan perlindungan sistem berlapis dan komunitas yang solid, kami siap membantu kamu mengamankan akun impian serta melayani kebutuhan transaksi digital harian tanpa rasa khawatir.
+            </div>
+            <button class="modal-close-btn" onclick="toggleModal('about-modal', false)">KONFIRMASI SIBER</button>
+        </div>
+    </div>
+
+    <div id="privacy-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">Security & Privacy Policy</div>
+            <div class="modal-body-text">
+                Di <strong>DYLF STOREacc</strong>, keamanan privasi data digital setiap pelanggan adalah prioritas paling mutlak.<br><br>
+                Seluruh track history data transaksi, ulasan konsumen, serta koordinasi kontak personal di dalam grup maupun channel dilindungi sepenuhnya dari pihak ketiga. Sistem cloud database kami menjamin bahwa rekam data yang kamu kirimkan digunakan secara transparan murni untuk meningkatkan kenyamanan kualitas layanan bertransaksi bersama kami.
+            </div>
+            <button class="modal-close-btn" onclick="toggleModal('privacy-modal', false)">SINKRONISASI DATA</button>
+        </div>
+    </div>
+
+    <main>
         
-        <div id="loading-screen" class="cyber-loader-screen">
-            <div class="cosmic-loader-wrapper">
-                <div class="cosmic-glow-ring"></div>
-                <img src="/static/dfstoreacc.png" class="load-logo" alt="Logo">
+        <section id="home">
+            <div class="hero-icon-row">
+                <a href="https://wa.me/6285266953530" target="_blank" class="hero-circle-btn" style="color: #25D366;"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.tiktok.com/@dylfrvr" target="_blank" class="hero-circle-btn" style="color: #ffffff;"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://instagram.com/dylfrvr" target="_blank" class="hero-circle-btn" style="color: #f9376c;"><i class="fa-brands fa-instagram"></i></a>
             </div>
-        </div>
+            <h1 class="welcome-title-text">Welcome To My Portfolio Website</h1>
+            <div class="typing-wrapper">I'm <span class="typing-text" id="typed-text"></span></div>
+            <span class="sub-domain-tag">www.dylf.store</span>
+        </section>
 
-        <div id="about-modal" class="modal-overlay">
-            <div class="modal-card">
-                <div class="modal-header"> About DYLF STOREacc</div>
-                <div class="modal-body-text">
-                    Selamat datang di <strong>DYLF STOREacc</strong>, platform ekosistem siber premium penyedia layanan Jual-Beli Akun Game serta Layanan Jasa Rekber Digital terpercaya yang dibangun langsung oleh <strong>Dileppp</strong>.<br><br>
-                    Kami berkomitmen penuh untuk menghadirkan transaksi gaming yang 100% amanah, kilat, dan terlindungi. Dengan perlindungan sistem berlapis dan komunitas yang solid, kami siap membantu kamu mengamankan akun impian serta melayani kebutuhan transaksi digital harian tanpa rasa khawatir. Kepercayaan konsumen adalah misi utama kami!
+        <section id="about">
+            <h2 class="section-title">About <span>Me</span></h2>
+            <div class="about-container">
+                <div class="about-avatar-wrapper">
+                    <div class="about-glow-ring"></div>
+                    <img src="/static/images/difibot_v2.png" class="about-avatar-img" alt="Avatar">
                 </div>
-                <button class="modal-close-btn" onclick="toggleModal('about-modal', false)">KONFIRMASI SIBER</button>
-            </div>
-        </div>
-
-        <div id="privacy-modal" class="modal-overlay">
-            <div class="modal-card">
-                <div class="modal-header"> Security & Privacy Policy</div>
-                <div class="modal-body-text">
-                    Di <strong>DYLF STOREacc</strong>, keamanan privasi data digital setiap pelanggan adalah prioritas paling mutlak.<br><br>
-                    Seluruh track history data transaksi, ulasan konsumen, serta koordinasi kontak personal di dalam grup maupun channel dilindungi sepenuhnya dari pihak ketiga. Sistem cloud database kami menjamin bahwa rekam data yang kamu kirimkan digunakan secara transparan murni untuk meningkatkan kenyamanan kualitas layanan bertransaksi bersama kami. Bersama kita bangun komunitas digital gaming yang bersih dan aman!
+                <div class="about-info-text">
+                    <h3>Hello, I'm Aidil Fitrian</h3>
+                    <p>
+                        Saya adalah seorang mahasiswa program studi <strong>Bisnis Digital</strong> di **Universitas Maritim Raja Ali Haji (UMRAH)**, Tanjung Pinang. Berfokus pada pengembangan sistem web otomatisasi, manajemen akuntansi, serta implementasi Design Thinking untuk solusi UMKM. Selain di dunia akademis, saya aktif mengelola platform bisnis digital gaming <strong>DYLF STOREacc</strong>.
+                    </p>
+                    <div class="action-btn-row">
+                        <a href="#contact" class="cyber-btn cyber-btn-purple">Download CV</a>
+                        <a href="#store" class="cyber-btn cyber-btn-outline">View Store</a>
+                    </div>
                 </div>
-                <button class="modal-close-btn" onclick="toggleModal('privacy-modal', false)">SINKRONISASI DATA</button>
             </div>
-        </div>
-
-        <div class="scroll-content" id="main-scroll">
             
-            <div class="main-content-wrapper">
+            <div class="stats-grid-container">
+                <div class="stat-card-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+                <div class="stat-card-item">
+                    <div class="stat-number">5★</div>
+                    <div class="stat-label">Store Rating</div>
+                </div>
+                <div class="stat-card-item">
+                    <div class="stat-number">1.2K+</div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+                <div class="stat-card-item">
+                    <div class="stat-number">2+ Years</div>
+                    <div class="stat-label">Experience</div>
+                </div>
+            </div>
+        </section>
 
-                <div id="page-home" class="page-section active">
-                    <div class="profile-container">
-                        <img src="/static/dfstoreacc.png" class="profile-logo" alt="Logo">
-                        <div class="profile-title">DYLF STOREacc</div>
-                        <div class="bio-box">
-                            Welcome to web DYLF STOREacc Pusat Layanan Jual & Beli Akun Digital Terpercaya khususnya akun game yg sedang kamu cari. Silahkan Join Komunitas dibawah ini untuk mendapatkan informasi lengkapnya.🌱
-                        </div>
+        <section id="store">
+            <h2 class="section-title">DYLF <span>STOREacc</span></h2>
+            <div class="store-intro-box">
+                Welcome to web DYLF STOREacc Pusat Layanan Jual & Beli Akun Digital Terpercaya khususnya akun game yg sedang kamu cari. Silahkan amankan stok akun gaming terbaikmu di bawah ini secara instan, amanah, dan terpercaya. 🌱
+            </div>
+            
+            <div class="store-grid-products">
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="/static/banner.png" class="product-img" alt="Product">
                     </div>
-
-                    <div class="sosmed-instruction-text">🎯 Click Icon to Contact Us 🎯</div>
-                    <div class="sosmed-row">
-                        <a href="https://wa.me/6285266953530" target="_blank" class="sosmed-icon" style="color: #25D366;"><i class="fa-brands fa-whatsapp"></i></a>
-                        <a href="https://www.tiktok.com/@dylfrvr" target="_blank" class="sosmed-icon" style="color: #ffffff;"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://instagram.com/dylfrvr" target="_blank" class="sosmed-icon" style="color: #f9376c;"><i class="fa-brands fa-instagram"></i></a>
-                    </div>
-
-                    <div class="wa-links-wrapper">
-                        <div class="mascot-absolute-container">
-                            <img src="/static/images/difibot_v2.png" class="mascot-img" alt="Mascot">
+                    <div class="product-body-details">
+                        <span class="product-tag-game">Mobile Legends</span>
+                        <h4 class="product-title-name">Akun MLBB High Spec Ready</h4>
+                        <ul class="product-info-specs">
+                            <li><i class="fa-solid fa-circle"></i> Winrate Tinggi 65%+</li>
+                            <li><i class="fa-solid fa-circle"></i> Skin Epic & Lightborn Banyak</li>
+                            <li><i class="fa-solid fa-circle"></i> Emblem Max Bergaransi</li>
+                        </ul>
+                        <div class="product-footer-price">
+                            <span class="price-value-idr">Rp 450.000</span>
+                            <a href="https://wa.me/6285266953530" target="_blank" class="cyber-btn cyber-btn-purple" style="padding: 6px 14px; font-size: 11px;">Beli</a>
                         </div>
-                        <a href="https://chat.whatsapp.com/IyHj3XJikuX90k6HSiMpDP" target="_blank" class="group-card">
-                            <div>
-                                <h3 style="color:#ffffff; font-size:13px; margin-bottom:2px;">GB 1: DYLF STOREacc</h3>
-                                <p style="color:#a0aec0; font-size:10px;">Grup komunitas utama pusat jual & beli akun</p>
-                            </div>
-                            <div style="color:#bc13fe; font-weight:bold;">&gt;</div>
-                        </a>
-                        <a href="https://whatsapp.com/channel/0029VbCmpXQ8vd1RqxIn6h0z" target="_blank" class="group-card">
-                            <div>
-                                <h3 style="color:#ffffff; font-size:13px; margin-bottom:2px;">CH: DYLF STOREacc</h3>
-                                <p style="color:#a0aec0; font-size:10px;">Channel info stok akun & track history testi</p>
-                            </div>
-                            <div style="color:#bc13fe; font-weight:bold;">&gt;</div>
-                        </a>
                     </div>
                 </div>
-
-                <div id="page-testi" class="page-section">
-                    <div class="store-banner">
-                        <img src="/static/banner.png" class="banner-img" alt="Banner">
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="/static/banner.png" class="product-img" alt="Product">
                     </div>
-                    <div class="testi-section-wrapper">
-                        <div style="text-align:center; margin-bottom:15px;">
-                            <h2 style="font-size:18px; color:#00ffff; text-transform:uppercase; text-shadow: 0 0 5px #00ffff;">Track History</h2>
-                            <p style="font-size:11px; color:#a0aec0;">Bukti nyata transaksi sukses amanah bersama kami</p>
+                    <div class="product-body-details">
+                        <span class="product-tag-game">Mobile Legends</span>
+                        <h4 class="product-title-name">Akun Smurf Mythic Murah</h4>
+                        <ul class="product-info-specs">
+                            <li><i class="fa-solid fa-circle"></i> All Unbind Aman Total</li>
+                            <li><i class="fa-solid fa-circle"></i> Change Name Aktif</li>
+                            <li><i class="fa-solid fa-circle"></i> Akun Anti-Minus</li>
+                        </ul>
+                        <div class="product-footer-price">
+                            <span class="price-value-idr">Rp 180.000</span>
+                            <a href="https://wa.me/6285266953530" target="_blank" class="cyber-btn cyber-btn-purple" style="padding: 6px 14px; font-size: 11px;">Beli</a>
                         </div>
-                        <div class="testi-tabs">
-                            <button id="tab-btn-stok" class="tab-btn active" onclick="switchTestiTab('stok')">STOK AKUN</button>
-                            <button id="tab-btn-rekber" class="tab-btn" onclick="switchTestiTab('rekber')">JASA REKBER</button>
-                        </div>
-                        <div class="testi-grid" id="testi-images-container"></div>
                     </div>
                 </div>
-
-                <div id="page-ulasan" class="page-section">
-                    <div class="store-banner">
-                        <img src="/static/banner.png" class="banner-img" alt="Banner">
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="/static/banner.png" class="product-img" alt="Product">
                     </div>
-                    <div class="review-stats-summary">
-                        <div class="big-rating-number">5.0 / 5.0</div>
-                        <div class="big-rating-stars">
+                    <div class="product-body-details">
+                        <span class="product-tag-game">JASA REKBER</span>
+                        <h4 class="product-title-name">Jasa Rekber Digital Dileppp</h4>
+                        <ul class="product-info-specs">
+                            <li><i class="fa-solid fa-circle"></i> Biaya Admin Sangat Murah</li>
+                            <li><i class="fa-solid fa-circle"></i> Proses Cepat & Amanah</li>
+                            <li><i class="fa-solid fa-circle"></i> Transaksi Dikawal Sampai Done</li>
+                        </ul>
+                        <div class="product-footer-price">
+                            <span class="price-value-idr">Fee Rp 5.000+</span>
+                            <a href="https://wa.me/6285266953530" target="_blank" class="cyber-btn cyber-btn-purple" style="padding: 6px 14px; font-size: 11px;">Hubungi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testi">
+            <h2 class="section-title">Track <span>History</span></h2>
+            <div class="showcase-tab-menu">
+                <button id="tab-btn-stok" class="tab-showcase-btn active" onclick="switchTestiTab('stok')">Stok Akun</button>
+                <button id="tab-btn-rekber" class="tab-showcase-btn" onclick="switchTestiTab('rekber')">Jasa Rekber</button>
+            </div>
+            <div class="gallery-showcase-grid" id="testi-images-container">
+                </div>
+        </section>
+
+        <section id="ulasan">
+            <h2 class="section-title">Consumer <span>Reviews</span></h2>
+            <div class="review-layout-wrapper">
+                
+                <div class="review-left-stats">
+                    <div class="stats-summary-box">
+                        <div class="stats-rating-num">5.0 / 5.0</div>
+                        <div class="stats-rating-stars">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         </div>
-                        <div style="font-size:11px; color:#a0aec0; font-weight:bold; text-transform: uppercase;">KEPUASAN PELANGGAN DYLF STOREacc</div>
+                        <div class="stats-rating-label">Kepuasan Pelanggan DYLF STOREacc</div>
                     </div>
-                    <div class="review-scroll-container" id="review-list"></div>
-                    <div class="form-review-box">
-                        <div class="form-box-title">✍️ Bagikan Pengalaman Transaksi</div>
+                    
+                    <div class="form-review-card">
+                        <div class="form-review-title">✍️ Bagikan Ulasan Kamu</div>
                         <form id="review-form">
                             <div style="margin-bottom: 12px;">
-                                <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Nama / Nickname Kamu</label>
-                                <input type="text" name="nama" id="form-nama" class="input-field" placeholder="Masukan nama lengkap..." required maxlength="30">
+                                <label style="font-size:11px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Nama / Nickname</label>
+                                <input type="text" name="nama" id="form-nama" class="input-field" placeholder="Masukan nama..." required maxlength="30">
                             </div>
                             <div style="margin-bottom: 12px;">
-                                <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Rating Kepuasan</label>
+                                <label style="font-size:11px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Rating</label>
                                 <select name="rating" id="form-rating" class="input-field" style="color:#00ffff; font-weight:bold;">
-                                    <option value="5">⭐⭐⭐⭐⭐ 5 - Sangat Puas / Rekomended</option>
+                                    <option value="5">⭐⭐⭐⭐⭐ 5 - Sangat Puas</option>
                                     <option value="4">⭐⭐⭐⭐ 4 - Puas / Cepat</option>
                                 </select>
                             </div>
                             <div style="margin-bottom: 12px;">
-                                <label style="font-size:10px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Isi Ulasan Pengalaman</label>
-                                <textarea name="text" id="form-text" class="input-field" rows="3" placeholder="Tulis testimoni kejujuran kamu di sini..." required maxlength="200"></textarea>
+                                <label style="font-size:11px; color:#a0aec0; font-weight:bold; text-transform:uppercase;">Ulasan Transaksi</label>
+                                <textarea name="text" id="form-text" class="input-field" rows="3" placeholder="Tulis testimoni kejujuran kamu..." required maxlength="200"></textarea>
                             </div>
                             <div id="status-msg" style="font-size:11px; color:#00ffff; text-align:center; margin-top:10px; display:none; margin-bottom:10px;"></div>
-                            <button type="submit" class="submit-review-btn">KIRIM TESTIMONI KONSUMEN</button>
+                            <button type="submit" class="submit-review-btn">Kirim Testimoni</button>
                         </form>
                     </div>
                 </div>
 
-                <div class="footer-privacy">
-                    <button class="privacy-link" onclick="toggleModal('about-modal', true)">About Store</button>
-                    <span style="color:rgba(255,255,255,0.15)">|</span>
-                    <button class="privacy-link" onclick="toggleModal('privacy-modal', true)">Privacy Policy</button>
+                <div class="review-right-list" id="review-list">
+                    </div>
+
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2 class="section-title">Contact <span>Me</span></h2>
+            <div class="contact-layout-wrapper">
+                <div class="contact-left-info">
+                    <h3>Get In Touch</h3>
+                    <p>Punya pertanyaan seputar stok akun, jasa rekber, atau ingin berkolaborasi dalam project bisnis digital? Jangan ragu untuk mengirimkan pesan langsung kepada saya. Saya akan merespon secepat mungkin!</p>
+                    
+                    <div class="contact-method-item">
+                        <div class="contact-method-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                        <div class="contact-method-detail">
+                            <h4>WhatsApp Bisnis</h4>
+                            <p>+62 852-6695-3530</p>
+                        </div>
+                    </div>
+                    <div class="contact-method-item">
+                        <div class="contact-method-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="contact-method-detail">
+                            <h4>Email Resmi</h4>
+                            <p>aidilfitrian@dylf.store</p>
+                        </div>
+                    </div>
                 </div>
-
+                
+                <div class="contact-right-form">
+                    <form id="contact-form-message">
+                        <div style="margin-bottom: 15px;">
+                            <input type="text" class="input-field" placeholder="Nama Lengkap Kamu..." style="padding: 12px;" required>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <input type="email" class="input-field" placeholder="Alamat Email Kamu..." style="padding: 12px;" required>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <textarea class="input-field" rows="5" placeholder="Tuliskan isi pesan kamu di sini dengan jelas..." style="padding: 12px;" required></textarea>
+                        </div>
+                        <button type="button" class="submit-review-btn" onclick="alert('Fitur pengiriman pesan portfolio berhasil diaktifkan!')" style="margin-top: 5px;">Kirim Pesan Siber</button>
+                    </form>
+                </div>
             </div>
+        </section>
+
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-links-row">
+            <button class="privacy-link" onclick="toggleModal('about-modal', true)">About Store</button>
+            <span style="color:rgba(255,255,255,0.15)">|</span>
+            <button class="privacy-link" onclick="toggleModal('privacy-modal', true)">Privacy Policy</button>
         </div>
-
-        <div class="bottom-nav">
-            <div id="btn-nav-home" class="nav-item active" onclick="switchPage('home')">
-                <img src="/static/menudf1.png" class="nav-mini-bot" alt="home-bot">
-                <span>HOME</span>
-                <div class="nav-dot"></div>
-            </div>
-            <div id="btn-nav-testi" class="nav-item" onclick="switchPage('testi')">
-                <img src="/static/menudf2.png" class="nav-mini-bot" alt="testi-bot">
-                <span>TESTIMONI</span>
-                <div class="nav-dot"></div>
-            </div>
-            <div id="btn-nav-ulasan" class="nav-item" onclick="switchPage('ulasan')">
-                <img src="/static/menudf3.png" class="nav-mini-bot" alt="ulasan-bot">
-                <span>ULASAN</span>
-                <div class="nav-dot"></div>
-            </div>
-        </div>
-
-    </div>
+        <p style="font-size: 11px; color: #51627c;">&copy; 2026 Aidil Fitrian. All Rights Reserved. Powered by Gemini API & Flask.</p>
+    </footer>
 
     <script>
+        // Menutup loading screen awal
         setTimeout(() => { document.getElementById('loading-screen').classList.add('hide'); }, 2200);
 
-        // Fungsi pengendali modal dinamis (About Us & Privacy Policy)
+        // Pengendali pop-up modal
         function toggleModal(idModal, show) {
             const modal = document.getElementById(idModal);
             if(show) modal.classList.add('show');
             else modal.classList.remove('show');
         }
 
-        function switchPage(pageName) {
-            const loader = document.getElementById('loading-screen');
-            loader.classList.remove('hide');
-            
-            setTimeout(() => {
-                document.querySelectorAll('.page-section').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                
-                const targetPage = document.getElementById('page-' + pageName);
-                if (targetPage) {
-                    targetPage.style.display = 'block';
-                    setTimeout(() => { targetPage.classList.add('active'); }, 10);
+        // Efek mengetik otomatis (Typing Effect)
+        const phrases = ["Aidil Fitrian", "Digital Business Student", "Owner DYLF STOREacc", "Web Developer"];
+        let i = 0, j = 0, currentPhrase = [], isDeleting = false;
+        const targetText = document.getElementById("typed-text");
+
+        function typeLoop() {
+            if (i < phrases.length) {
+                if (!isDeleting && j <= phrases[i].length) {
+                    currentPhrase.push(phrases[i][j]); j++;
+                    targetText.innerHTML = currentPhrase.join("");
                 }
-                
-                const currentBtn = document.getElementById('btn-nav-' + pageName);
-                if (currentBtn) {
-                    currentBtn.classList.add('active');
+                if (isDeleting && j <= phrases[i].length) {
+                    currentPhrase.pop(); j--;
+                    targetText.innerHTML = currentPhrase.join("");
                 }
-                
-                if(pageName === 'testi') { ambilFotoTesti('stok'); } 
-                else if(pageName === 'ulasan') { ambilUlasanCloud(); }
-                
-                setTimeout(() => { loader.classList.add('hide'); }, 100);
-            }, 400);
+                if (j == phrases[i].length) { isDeleting = true; }
+                if (isDeleting && j == 0) { currentPhrase = []; isDeleting = false; i++; if (i == phrases.length) i = 0; }
+            }
+            setTimeout(typeLoop, isDeleting ? 60 : 120);
+        }
+        setTimeout(typeLoop, 1000);
+
+        // Sinkronisasi Scroll Active Header Link Highlight
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-link");
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 120) { current = section.getAttribute("id"); }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(current)) { link.classList.add("active"); }
+            });
+        });
+
+        // Pengendali Tab Galeri Testimoni
+        function switchTestiTab(tabName) {
+            document.querySelectorAll('.tab-showcase-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-btn-' + tabName).classList.add('active');
+            ambilFotoTesti(tabName); 
         }
 
         async function ambilFotoTesti(kategori) {
             const wadahGrid = document.getElementById('testi-images-container');
             if(!wadahGrid) return;
-            wadahGrid.innerHTML = '<p class="no-testi-text">Menyelaraskan sinyal galeri siber...</p>';
-            
+            wadahGrid.innerHTML = '<p class="no-testi-text" style="grid-column: span 4; text-align:center; color:#51627c;">Menyelaraskan sinyal galeri siber...</p>';
             try {
                 const respon = await fetch(`/api/testi/${kategori}`);
                 let urlsGambar = await respon.json();
-                
                 if(!urlsGambar || urlsGambar.length === 0) {
-                    wadahGrid.innerHTML = `<p class="no-testi-text">Folder static/testi/${kategori}/ kosong, Leppp.</p>`;
+                    wadahGrid.innerHTML = `<p class="no-testi-text" style="grid-column: span 4; text-align:center; color:#51627c;">Belum ada foto testimoni folder ${kategori}.</p>`;
                     return;
                 }
-                
                 urlsGambar.sort((a, b) => b.toLowerCase().localeCompare(a.toLowerCase(), undefined, {numeric: true, sensitivity: 'base'}));
-                
                 wadahGrid.innerHTML = ''; 
                 urlsGambar.forEach(url => {
-                    wadahGrid.innerHTML += `<img src="${url}" class="testi-img-item" alt="Testi" onclick="window.open('${url}', '_blank')">`;
+                    wadahGrid.innerHTML += `<img src="${url}" class="gallery-item-card" alt="Testi" onclick="window.open('${url}', '_blank')">`;
                 });
-            } catch (err) {
-                wadahGrid.innerHTML = '<p class="no-testi-text" style="color:#f9376c;">Gagal memuat galeri.</p>';
-            }
+            } catch (err) { wadahGrid.innerHTML = '<p class="no-testi-text" style="grid-column: span 4; text-align:center; color:#f9376c;">Gagal memuat galeri.</p>'; }
         }
+        // Ambil data awal galeri testi stok akun
+        setTimeout(() => { ambilFotoTesti('stok'); }, 500);
 
-        function switchTestiTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-btn-' + tabName).classList.add('active');
-            ambilFotoTesti(tabName); 
-        }
-
+        // Ambil Data Ulasan Cloud Supabase Real-Time
         async function ambilUlasanCloud() {
             const kontainer = document.getElementById('review-list');
             if (!kontainer) return;
-            kontainer.innerHTML = '<p style="color:#718096; text-align:center; font-size:12px; padding:20px 0;">Memuat ulasan...</p>';
+            kontainer.innerHTML = '<p style="color:#718096; text-align:center; font-size:12px; padding:20px 0;">Memuat ulasan siber...</p>';
             try {
                 const respon = await fetch('/ulasan');
                 const data = await respon.json();
                 if (!data || data.length === 0) {
-                    kontainer.innerHTML = '<p style="color:#718096; text-align:center; font-size:12px; padding:20px 0;">Belum ada ulasan.</p>';
+                    kontainer.innerHTML = '<p style="color:#718096; text-align:center; font-size:12px; padding:20px 0;">Belum ada ulasan konsumen.</p>';
                     return;
                 }
                 kontainer.innerHTML = '';
@@ -447,33 +667,36 @@
                     let stars = '';
                     for(let i = 0; i < item.rating; i++) { stars += '<i class="fa-solid fa-star"></i>'; }
                     kontainer.innerHTML += `
-                        <div class="standalone-review-card">
-                            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:800; margin-bottom:4px;">
+                        <div class="consumer-review-card">
+                            <div class="review-card-header">
                                 <div>👤 ${item.nama}</div>
-                                <div style="color:#718096; font-size:10px;">${item.tanggal || ''}</div>
+                                <div style="color:#51627c; font-size:10px;">${item.tanggal || ''}</div>
                             </div>
-                            <div class="review-item-stars">${stars}</div>
-                            <p style="font-size:12px; color:#e2e8f0; line-height:1.45;">${item.text}</p>
+                            <div class="review-card-stars">${stars}</div>
+                            <p class="review-card-body">${item.text}</p>
                         </div>
                     `;
                 });
             } catch (err) { kontainer.innerHTML = '<p style="color:#f9376c; text-align:center; font-size:12px; padding:20px 0;">Gagal memuat ulasan.</p>'; }
         }
+        setTimeout(ambilUlasanCloud, 800);
 
+        // Submit form ulasan baru
         const formUlasan = document.getElementById('review-form');
         if (formUlasan) {
             formUlasan.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const msg = document.getElementById('status-msg');
-                msg.style.display = 'block'; msg.innerText = 'Sedang mengirim...';
+                msg.style.display = 'block'; msg.innerText = 'Sedang mengirim data siber...';
                 const dataForm = new FormData(formUlasan);
                 try {
                     const respon = await fetch('/tambah-ulasan', { method: 'POST', body: dataForm });
                     const hasil = await respon.json();
                     if (hasil.success) {
                         msg.innerText = hasil.message; formUlasan.reset(); ambilUlasanCloud();
+                        setTimeout(() => { msg.style.display = 'none'; }, 400);
                     } else { msg.innerText = 'Gagal: ' + hasil.message; }
-                } catch (err) { msg.innerText = 'Gagal terhubung ke server.'; }
+                } catch (err) { msg.innerText = 'Gagal terhubung ke server cloud.'; }
             });
         }
     </script>
